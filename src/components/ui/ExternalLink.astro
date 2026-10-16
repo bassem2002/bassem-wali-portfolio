@@ -1,0 +1,11 @@
+---
+import Icon from './Icon.astro';
+import type { Locale } from '@/types/content';
+interface Props { href: string; newTab?: boolean; locale?: Locale }
+const { href, newTab = false, locale = Astro.currentLocale === 'en' ? 'en' : 'fr' } = Astro.props;
+const newTabLabels = { fr: '(nouvel onglet)', en: '(opens in a new tab)' };
+---
+<a class="text-link" href={href} target={newTab ? '_blank' : undefined} rel={newTab ? 'noopener noreferrer' : undefined}>
+  <slot /><Icon name="external" />
+  {newTab && <span class="sr-only">{newTabLabels[locale]}</span>}
+</a>

@@ -1,0 +1,8 @@
+---
+import type { Locale, Project } from '@/types/content';
+import Icon from './ui/Icon.astro';
+interface Props { project: Project; locale: Locale }
+const { project, locale } = Astro.props;
+const video = project.videoDemo;
+---
+{video && <a class="video-demo-link" data-video-demo={project.id} href={video.url} target="_blank" rel="noopener noreferrer"><span class="video-demo-link__play"><Icon name="play" /></span><span>{video.label[locale]}<span class="sr-only"> — {project.title} {locale === 'fr' ? '(nouvel onglet)' : '(opens in a new tab)'}</span></span><Icon name="external" /></a>}

@@ -1,0 +1,33 @@
+---
+import SeoHead from '@/components/SeoHead.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import SiteFooter from '@/components/SiteFooter.astro';
+import { ui } from '@/i18n/ui';
+import '@/styles/global.css';
+import type { Locale } from '@/types/content';
+interface Props { locale: Locale; title: string; description: string; schema?: unknown; noindex?: boolean; specimen?: boolean; homepage?: boolean }
+const { locale, title, description, schema, noindex = false, specimen = false, homepage = false } = Astro.props;
+---
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <SeoHead locale={locale} title={title} description={description} schema={schema} noindex={noindex} />
+    <script is:inline>
+      document.documentElement.dataset.js = 'true';
+      try {
+        const theme = localStorage.getItem('theme');
+        if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
+      } catch { /* CSS uses the OS preference without storage. */ }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">{ui[locale].skip}</a>
+    <SiteHeader locale={locale} specimen={specimen} homepage={homepage} />
+    <main id="main-content" tabindex="-1" class:list={['container', { homepage }]}><slot /></main>
+    <SiteFooter locale={locale} />
+  </body>
+</html>

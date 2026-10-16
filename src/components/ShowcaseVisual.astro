@@ -1,0 +1,42 @@
+---
+import type { Locale } from '@/types/content';
+import { v3Copy } from '@/i18n/v3';
+interface Props { projectId: string; locale: Locale }
+const { projectId, locale } = Astro.props;
+const c = v3Copy[locale];
+const titles: Record<string, string> = { rezouette: c.social, smartalumni: c.mentor, 'enterprise-bi-dashboard': c.analytics, 'min-draw-fx': c.canvas, 'waste-classification': c.vision };
+---
+<figure class:list={['showcase-art', `showcase-art--${projectId}`]}>
+  <svg viewBox="0 0 480 250" role="img" aria-label={`${titles[projectId]} — ${c.illustration}`}>
+    {projectId === 'rezouette' && <>
+      <circle class="art-halo" cx="290" cy="120" r="110" />
+      <g class="art-float"><rect class="art-panel" x="36" y="52" width="140" height="124" rx="15" /><text x="48" y="77" class="art-micro">{c.accounts}</text><circle class="art-accent-fill" cx="64" cy="107" r="15" /><circle class="art-secondary-fill" cx="102" cy="107" r="15" /><circle class="art-soft-fill" cx="140" cy="107" r="15" /><path class="art-line" d="M52 144H124" /></g>
+      <g><rect class="art-panel" x="152" y="30" width="280" height="165" rx="17" /><circle class="art-accent-fill" cx="176" cy="53" r="4" /><text x="190" y="58">{c.composer}</text><path class="art-line" d="M174 83H332M174 96H282" /><rect class="art-soft-fill" x="174" y="112" width="145" height="62" rx="8" /><path class="art-accent-line" d="M185 162L214 132L239 150L263 121L309 162" /><rect class="art-accent-fill" x="333" y="143" width="77" height="30" rx="8" /><path class="art-white-line" d="M350 158H391M384 152L391 158L384 164" /></g>
+      <g class="art-float-late"><rect class="art-accent-fill" x="227" y="184" width="204" height="43" rx="13" /><circle class="art-white-line" cx="250" cy="205" r="8" /><path class="art-white-line" d="M250 199V205H256" /><text class="art-on-accent" x="271" y="210">{c.schedule} · OAuth</text></g>
+    </>}
+    {projectId === 'smartalumni' && <>
+      <circle class="art-halo" cx="245" cy="115" r="110" />
+      <g class="art-float"><rect class="art-panel" x="44" y="33" width="128" height="168" rx="13" /><rect class="art-secondary-fill" x="63" y="52" width="30" height="36" rx="5" /><text x="108" y="74">{c.document}</text><path class="art-line" d="M63 111H150M63 125H138M63 139H150M63 153H122" /><text class="art-small" x="63" y="182">Tika · DeepSeek</text></g>
+      <g><rect class="art-panel" x="201" y="22" width="232" height="88" rx="15" /><text x="221" y="49">{c.profile}</text><rect class="art-soft-fill" x="220" y="64" width="62" height="24" rx="12" /><rect class="art-soft-fill" x="291" y="64" width="119" height="24" rx="12" /><path class="art-accent-line" d="M173 107L187 107L187 64H201" /></g>
+      <g class="art-float-late"><rect class="art-panel" x="219" y="130" width="214" height="99" rx="15" /><circle class="art-secondary-fill" cx="246" cy="156" r="13" /><circle class="art-soft-fill" cx="280" cy="156" r="13" /><circle class="art-soft-fill" cx="314" cy="156" r="13" /><text class="art-small" x="236" y="189">{c.mentors}</text><text x="236" y="210">{c.matching}</text></g>
+    </>}
+    {projectId === 'enterprise-bi-dashboard' && <>
+      <circle class="art-halo" cx="260" cy="105" r="110" />
+      <rect class="art-panel" x="39" y="29" width="401" height="193" rx="17" /><text x="61" y="56">{c.analytics}</text><rect class="art-soft-fill" x="300" y="41" width="115" height="24" rx="12" /><text class="art-small" x="317" y="58">SSAS · MDX</text>
+      <g class="art-float"><rect class="art-soft-fill" x="60" y="77" width="105" height="46" rx="10" /><path class="art-accent-line" d="M76 105L91 96L105 102L125 86L145 92" /><rect class="art-soft-fill" x="178" y="77" width="105" height="46" rx="10" /><path class="art-accent-line" d="M197 105H260M197 94H241" /><rect class="art-soft-fill" x="296" y="77" width="120" height="46" rx="10" /><text class="art-small" x="310" y="105">OLAP</text></g>
+      <path class="art-grid-line" d="M61 148H416M61 173H416M61 198H416" /><g class="art-bars"><rect class="art-accent-fill" x="78" y="163" width="32" height="36" rx="4" /><rect class="art-secondary-fill" x="132" y="143" width="32" height="56" rx="4" /><rect class="art-accent-fill" x="186" y="152" width="32" height="47" rx="4" /><rect class="art-secondary-fill" x="240" y="132" width="32" height="67" rx="4" /><rect class="art-accent-fill" x="294" y="147" width="32" height="52" rx="4" /><rect class="art-secondary-fill" x="348" y="137" width="32" height="62" rx="4" /></g>
+    </>}
+    {projectId === 'min-draw-fx' && <>
+      <rect class="art-panel" x="37" y="26" width="405" height="198" rx="17" /><path class="art-grid-line" d="M58 66H420M333 67V208" /><circle class="art-accent-fill" cx="61" cy="46" r="5" /><circle class="art-soft-fill" cx="79" cy="46" r="5" /><text class="art-small" x="275" y="51">Command · Decorator</text>
+      <g class="art-float"><rect class="art-secondary-fill" x="86" y="90" width="92" height="83" rx="17" /><circle class="art-accent-fill" cx="222" cy="153" r="42" /><path class="art-shape" d="M179 186L267 95L294 186Z" /></g>
+      <path class="art-selection" d="M180 108H266V197H180Z" /><g class="art-handle"><rect x="177" y="105" width="7" height="7" /><rect x="263" y="105" width="7" height="7" /><rect x="177" y="194" width="7" height="7" /><rect x="263" y="194" width="7" height="7" /></g>
+      <text class="art-small" x="349" y="90">{c.layers}</text><rect class="art-soft-fill" x="347" y="103" width="73" height="25" rx="6" /><rect class="art-soft-fill" x="347" y="136" width="73" height="25" rx="6" /><path class="art-accent-line" d="M355 188H393Q409 188 409 176Q409 164 393 164M355 188L364 179M355 188L364 197" />
+    </>}
+    {projectId === 'waste-classification' && <>
+      <circle class="art-halo" cx="210" cy="125" r="110" /><g class="art-float"><rect class="art-panel" x="42" y="48" width="158" height="158" rx="18" /><rect class="art-soft-fill" x="58" y="64" width="126" height="126" rx="11" /><path class="art-object" d="M98 89H140L150 164Q120 181 89 164Z" /><path class="art-accent-line" d="M98 89L103 80H135L140 89M104 109V154M119 109V157M134 109V154" /><path class="art-selection" d="M73 91V77H88M155 77H170V91M170 162V176H155M88 176H73V162" /></g>
+      <g class="art-float-late"><rect class="art-layer-back" x="257" y="54" width="91" height="101" rx="11" /><rect class="art-layer-back" x="245" y="65" width="91" height="101" rx="11" /><rect class="art-panel" x="233" y="76" width="91" height="101" rx="11" /><path class="art-grid-line" d="M250 92H307M250 109H307M250 126H307M250 143H307M260 87V158M278 87V158M296 87V158" /></g>
+      <rect class="art-accent-fill" x="283" y="153" width="157" height="57" rx="14" /><text class="art-on-accent" x="300" y="178">{c.fusion}</text><text class="art-on-accent art-small" x="300" y="197">{c.classification}</text><text class="art-small" x="243" y="45">ResNet50 · RGB</text>
+    </>}
+  </svg>
+  <figcaption>{c.illustration}</figcaption>
+</figure>

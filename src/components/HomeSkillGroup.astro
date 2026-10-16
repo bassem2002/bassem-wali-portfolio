@@ -1,0 +1,16 @@
+---
+import type { HomeSkillGroup } from '@/data/home';
+import { projectsDemonstrating } from '@/utils/projects';
+import { localizedPath } from '@/i18n/routes';
+import TechTag from './ui/TechTag.astro';
+import type { Locale } from '@/types/content';
+interface Props { group: HomeSkillGroup; locale: Locale }
+const { group, locale } = Astro.props;
+---
+<div class="skill-group">
+  <h3>{group.title[locale]}</h3>
+  <ul>{(group.id === 'architecture-tools' ? group.skillIds.slice(-3) : group.skillIds.slice(0, 3)).map(id => {
+    const project = projectsDemonstrating(id)[0];
+    return <li>{project ? <TechTag locale={locale} technology={id} href={localizedPath(locale, `/projects/${project.slug}`)} /> : <TechTag locale={locale} technology={id} />}</li>;
+  })}</ul>
+</div>

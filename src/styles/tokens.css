@@ -1,0 +1,81 @@
+:root {
+  color-scheme: light;
+  --color-bg: #f8fafc;
+  --color-surface: #ffffff;
+  --color-soft: #edf2fc;
+  --color-text: #0f172a;
+  --color-muted: #475569;
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-primary-ink: #ffffff;
+  --color-selected: #edf2fc;
+  --color-border: #e2e8f0;
+  --color-control-border: #718096;
+  --color-focus: #2563eb;
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  --text-display: clamp(3.25rem, 8vw, 6rem);
+  --text-h1: clamp(2.5rem, 5vw, 4.25rem);
+  --text-h2: clamp(1.875rem, 3.2vw, 2.75rem);
+  --text-h3: clamp(1.25rem, 2vw, 1.5rem);
+  --text-body-lg: clamp(1.125rem, 1.6vw, 1.25rem);
+  --text-body: 1rem;
+  --text-small: .875rem;
+  --text-label: .8125rem;
+  --leading-heading: 1.12;
+  --leading-body: 1.7;
+  --space-1: .25rem;
+  --space-2: .5rem;
+  --space-3: .75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+  --content-width: 95rem;
+  --reading-width: 65ch;
+  --gutter: var(--space-6);
+  --section-gap: clamp(4rem, 8vw, 8rem);
+  --radius-sm: .25rem;
+  --radius-md: .5rem;
+  --duration-fast: 120ms;
+  --duration-normal: 180ms;
+  --duration-slow: 280ms;
+  --ease-standard: ease-out;
+}
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --color-bg: #070b14;
+  --color-surface: #111827;
+  --color-soft: #17233b;
+  --color-text: #f8fafc;
+  --color-muted: #a6b4c8;
+  --color-primary: #85b4ff;
+  --color-primary-hover: #b3d0ff;
+  --color-primary-ink: #071326;
+  --color-selected: #1c3457;
+  --color-border: #28354c;
+  --color-control-border: #8293ae;
+  --color-focus: #85b4ff;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --color-bg: #070b14;
+    --color-surface: #111827;
+    --color-soft: #17233b;
+    --color-text: #f8fafc;
+    --color-muted: #a6b4c8;
+    --color-primary: #85b4ff;
+    --color-primary-hover: #b3d0ff;
+    --color-primary-ink: #071326;
+    --color-selected: #1c3457;
+    --color-border: #28354c;
+    --color-control-border: #8293ae;
+    --color-focus: #85b4ff;
+  }
+}
+@media (min-width: 48rem) { :root { --gutter: var(--space-8); } }
+@media (min-width: 75rem) { :root { --gutter: var(--space-12); } }

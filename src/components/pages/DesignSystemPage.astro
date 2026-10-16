@@ -1,0 +1,109 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/Hero.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import Button from '@/components/ui/Button.astro';
+import TextLink from '@/components/ui/TextLink.astro';
+import ExternalLink from '@/components/ui/ExternalLink.astro';
+import Badge from '@/components/ui/Badge.astro';
+import TechTag from '@/components/ui/TechTag.astro';
+import ProjectCard from '@/components/ProjectCard.astro';
+import SkillGroup from '@/components/SkillGroup.astro';
+import ExperienceItem from '@/components/ExperienceItem.astro';
+import EducationItem from '@/components/EducationItem.astro';
+import EngineeringFocus from '@/components/EngineeringFocus.astro';
+import { engineeringFocus } from '@/data/engineering-focus';
+import { projects } from '@/data/projects';
+import { experiences } from '@/data/experience';
+import { education } from '@/data/education';
+import { profile } from '@/data/profile';
+import { localizedPath } from '@/i18n/routes';
+import { projectBySlug, projectsUsing } from '@/utils/projects';
+import type { Locale } from '@/types/content';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const t = (fr: string, en: string) => locale === 'fr' ? fr : en;
+const swatches = ['bg', 'surface', 'text', 'muted', 'primary', 'selected', 'border', 'focus'];
+const spacing = [1, 2, 3, 4, 6, 8, 12, 16, 24];
+const featured = projects.find(project => project.slug === 'rezouette');
+const complementary = projects.find(project => project.slug === 'smart-trade-manager');
+const seq2seq = projectBySlug('english-french-seq2seq');
+const waste = projectBySlug('waste-classification');
+---
+<BaseLayout locale={locale} title="Engineering Editorial — Design System" description={t('Démonstration interne des composants du portfolio de Bassem Wali.', 'Internal demonstration of Bassem Wali’s portfolio components.')} noindex specimen>
+  <header class="specimen-intro">
+    <p class="eyebrow">{t('Phase 02 / Système visuel', 'Phase 02 / Visual system')}</p>
+    <h1>Engineering<br />Editorial.</h1>
+    <p class="lead muted">{t('Une présentation structurée du logiciel, des projets et de leurs preuves. Hiérarchie forte, palette limitée, espace généreux.', 'A structured presentation of software, projects and evidence. Strong hierarchy, a restrained palette and generous spacing.')}</p>
+    <nav class="cluster" aria-label={t('Index des composants', 'Component index')}>
+      <TextLink href="#hero">Hero</TextLink><TextLink href="#palette">{t('Palette', 'Colors')}</TextLink>
+      <TextLink href="#typography">{t('Typographie', 'Typography')}</TextLink><TextLink href="#controls">{t('Composants', 'Components')}</TextLink>
+      <TextLink href="#cards">{t('Cartes', 'Cards')}</TextLink><TextLink href="#relations">Technologies ↔ Projects</TextLink>
+    </nav>
+  </header>
+  <section id="hero" aria-labelledby="hero-heading" class="specimen-section">
+    <SectionHeading id="hero-heading" title="Hero" eyebrow="01 / Introduction" description={t('Le nom et le positionnement précèdent les technologies. Le portrait reste secondaire.', 'Name and positioning come before technologies. The portrait stays secondary.')} />
+    <Hero locale={locale} headingLevel={2} />
+  </section>
+  <section id="palette" aria-labelledby="palette-heading" class="specimen-section">
+    <SectionHeading id="palette-heading" title={t('Une palette, deux thèmes.', 'One palette, two themes.')} eyebrow="02 / Colors" description={t('Le bouton de thème dans la navigation permet de comparer les surfaces, le texte et les accents.', 'Use the navigation theme button to compare surfaces, text and accents.')} />
+    <ul class="swatches">{swatches.map(token => <li><div class="swatch" style={`--swatch-color: var(--color-${token})`} aria-hidden="true"></div><span class="technical-label">--color-{token}</span></li>)}</ul>
+  </section>
+  <section id="typography" aria-labelledby="typography-heading" class="specimen-section">
+    <SectionHeading id="typography-heading" title={t('La hiérarchie fait le travail.', 'Hierarchy does the work.')} eyebrow="03 / Typography" description={t('Sans-serif système pour le contenu ; monospace pour les petits repères techniques. Aucun appel à un service de polices.', 'System sans-serif for content; monospace for small technical labels. No external font service.')} />
+    <div class="type-sample"><span class="technical-label">Display</span><p class="type-display">Bassem Wali</p></div>
+    <div class="type-sample"><span class="technical-label">H1</span><p class="type-h1">Software Engineering</p></div>
+    <div class="type-sample"><span class="technical-label">H2</span><p class="type-h2">Full-Stack Development</p></div>
+    <div class="type-sample"><span class="technical-label">H3</span><p class="type-h3">Business Intelligence</p></div>
+    <div class="type-sample"><span class="technical-label">Body Large</span><p class="type-body-lg">{profile.summary[locale]}</p></div>
+    <div class="type-sample"><span class="technical-label">Body</span><p>{profile.summary[locale]}</p></div>
+    <div class="type-sample"><span class="technical-label">Small</span><p class="type-small">IIT · ESIGELEC · Rouen, France</p></div>
+    <div class="type-sample"><span class="technical-label">Technical Label</span><p class="technical-label">Spring Boot · Angular · PostgreSQL</p></div>
+  </section>
+  <section aria-labelledby="spacing-heading" class="specimen-section">
+    <SectionHeading id="spacing-heading" title={t('Un rythme régulier.', 'A consistent rhythm.')} eyebrow="04 / Spacing" description={t('Échelle de 4 px, avec sections de 64 à 128 px selon la largeur du viewport.', 'A 4 px scale, with section spacing from 64 to 128 px depending on viewport width.')} />
+    <ul class="spacing-scale">{spacing.map(step => <li><div class="spacing-bar" style={`--sample-space: var(--space-${step})`} aria-hidden="true"></div><span class="technical-label">{step * 4}px</span></li>)}</ul>
+  </section>
+  <section id="controls" aria-labelledby="controls-heading" class="specimen-section">
+    <SectionHeading id="controls-heading" title={t('Des actions explicites.', 'Clear actions.')} eyebrow="05 / Components" description={t('Survolez les liens et utilisez Tab pour inspecter le focus. Le CV est désactivé tant que la version publique manque.', 'Hover links and use Tab to inspect focus. CV download remains disabled until a public version is provided.')} />
+    <div class="stack">
+      <div class="cluster"><Button href={localizedPath(locale, '/projects/')} icon="arrow-right">{t('Voir les projets', 'View projects')}</Button><Button variant="secondary" href="#cards">{t('Voir les cartes', 'View cards')}</Button><Button variant="ghost" href={profile.links.github} icon="external">GitHub</Button></div>
+      <div class="cluster"><Button disabled>{t('Primary désactivé', 'Disabled primary')}</Button><Button variant="secondary" disabled>{t('CV public bientôt disponible', 'Public CV coming soon')}</Button><Button variant="ghost" disabled>{t('Ghost désactivé', 'Disabled ghost')}</Button></div>
+      <div class="cluster"><TextLink href="#relations">Technologies ↔ Projects</TextLink><ExternalLink href={profile.links.github}>GitHub</ExternalLink></div>
+      <div class="cluster"><Badge accent>{t('Projet phare', 'Featured project')}</Badge><Badge>{t('Projet complémentaire', 'Complementary project')}</Badge><TechTag technology="spring-boot" /><TechTag technology="ssas" /><TechTag technology="pytorch" /></div>
+    </div>
+  </section>
+  <section id="cards" aria-labelledby="cards-heading" class="specimen-section">
+    <SectionHeading id="cards-heading" title={t('Le projet, avant la décoration.', 'The project comes first.')} eyebrow="06 / Projects" description={t('Cartes textuelles complètes, sans fausse capture. Une variante avec image locale approuvée est prête.', 'Complete text cards without fabricated screenshots. A variant for approved local images is ready.')} />
+    <div class="project-grid">{featured && <ProjectCard project={featured} locale={locale} />}{complementary && <ProjectCard project={complementary} locale={locale} />}</div>
+  </section>
+  <section id="skills" aria-labelledby="skills-heading" class="specimen-section">
+    <SectionHeading id="skills-heading" title={t('Compétences reliées au code.', 'Skills connected to code.')} eyebrow="07 / Skills" description={t('Chaque technologie renvoie à un projet qui la démontre. Pas de pourcentages ou de niveaux inventés.', 'Each technology links to a project demonstrating it. No percentages or invented proficiency levels.')} />
+    <div class="skill-grid"><SkillGroup group="backend" title="Backend" locale={locale} /><SkillGroup group="bi" title="Business Intelligence" locale={locale} /><SkillGroup group="deep-learning" title="Deep Learning" locale={locale} /></div>
+  </section>
+  <section aria-labelledby="focus-heading" class="specimen-section">
+    <SectionHeading id="focus-heading" title={t('Les axes d’ingénierie.', 'Engineering focus.')} eyebrow="08 / Engineering" />
+    {engineeringFocus.map(focus => <EngineeringFocus focus={focus} locale={locale} />)}
+  </section>
+  <section id="experience" aria-labelledby="experience-heading" class="specimen-section">
+    <SectionHeading id="experience-heading" title={t('Un parcours lisible.', 'A readable journey.')} eyebrow="09 / Experience" description={t('Dates et lieu dans une colonne dédiée ; rôle, projet et technologies dans la colonne principale.', 'Dates and location in a separate column; role, project and technologies in the main column.')} />
+    {experiences[0] && <ExperienceItem experience={experiences[0]} locale={locale} />}
+    <h3>{t('Formation', 'Education')}</h3>
+    {education[1] && <EducationItem education={education[1]} locale={locale} />}
+  </section>
+  <section id="relations" aria-labelledby="relations-heading" class="specimen-section">
+    <SectionHeading id="relations-heading" title="Technologies ↔ Projects" eyebrow="10 / Signature" description={t('Aperçu statique des états. La sélection interactive sera implémentée en Phase 7, à partir des mêmes données.', 'Static state preview. Interactive selection will be implemented in Phase 7 using the same data.')} />
+    <div class="relation-panel">
+      <p class="type-small">{t('Exemple : PyTorch sélectionné. Les autres projets restent lisibles.', 'Example: PyTorch selected. Other projects remain readable.')}</p>
+      <div class="cluster"><TechTag technology="pytorch" selected href="#pytorch-matches" /><TechTag technology="ssas" href="#ssas-matches" /><TechTag technology="spring-boot" href="#spring-matches" /></div>
+      <ul class="static-matches">
+        {[['pytorch', 'pytorch-matches'], ['ssas', 'ssas-matches'], ['spring-boot', 'spring-matches']].map(([technology, id]) => <li id={id}>{technology}: {projectsUsing(technology ?? '').map((project, index) => <>{index > 0 && ' · '}<a href={localizedPath(locale, `/projects/${project.slug}`)}>{project.title}</a></>)}</li>)}
+      </ul>
+      <div class="project-grid">{seq2seq && <ProjectCard project={seq2seq} locale={locale} relation="highlighted" />}{waste && <ProjectCard project={waste} locale={locale} relation="muted" />}</div>
+    </div>
+  </section>
+  <section id="about" aria-labelledby="about-heading" class="specimen-section">
+    <SectionHeading id="about-heading" title={t('À propos — bloc éditorial.', 'About — editorial block.')} eyebrow="11 / Reading" />
+    <div class="reading-width"><p class="lead">{profile.summary[locale]}</p><p class="muted">{t('Langues', 'Languages')} : {profile.languages.map(language => language[locale]).join(' · ')}</p></div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,17 @@
+---
+import ProjectLayout from '@/layouts/ProjectLayout.astro';
+import { publishedCaseStudy } from '@/utils/case-studies';
+import { technologyNames } from '@/data/skills';
+import { ui } from '@/i18n/ui';
+import type { Locale, Project } from '@/types/content';
+import CaseStudyPage from './CaseStudyPage.astro';
+interface Props { locale: Locale; project: Project }
+const { locale, project } = Astro.props;
+const entry = await publishedCaseStudy(project.slug, locale);
+---
+{entry ? <CaseStudyPage project={project} entry={entry} /> : <ProjectLayout locale={locale} project={project}>
+  <section aria-labelledby="stack-heading">
+    <h2 id="stack-heading">{ui[locale].technologies}</h2>
+    <p class="technologies">{project.technologies.map(id => technologyNames.get(id)).join(' · ')}</p>
+  </section>
+</ProjectLayout>}

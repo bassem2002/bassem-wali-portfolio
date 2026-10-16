@@ -1,0 +1,36 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import ProjectCard from '@/components/ProjectCard.astro';
+import TechTag from '@/components/ui/TechTag.astro';
+import { projects } from '@/data/projects';
+import { profile } from '@/data/profile';
+import { skills } from '@/data/skills';
+import { localizedPath } from '@/i18n/routes';
+---
+<BaseLayout locale="fr" title="Revue du contenu français" description="Vue de travail des données et du contenu français du portfolio." noindex>
+  <header><p class="eyebrow">Revue éditoriale</p><h1>Contenu français.</h1><p class="lead">Vue de travail des textes et des relations vérifiées. Les études publiées et les liens vidéo vérifiés suivent les données courantes ; aucun screenshot de projet n’est réhébergé.</p></header>
+  <section aria-labelledby="profile-heading">
+    <SectionHeading id="profile-heading" title="Profil et recherche de stage" />
+    <div class="reading-width"><p class="lead">{profile.summary.fr}</p><p>{profile.academicLine.fr}</p><p>{profile.availability.fr}</p></div>
+  </section>
+  <section aria-labelledby="about-heading">
+    <SectionHeading id="about-heading" title="À propos" />
+    <div class="reading-width">{profile.about.fr.map(paragraph => <p>{paragraph}</p>)}<p>{profile.contactMessage.fr}</p></div>
+  </section>
+  <section aria-labelledby="projects-heading">
+    <SectionHeading id="projects-heading" title="Les 14 projets" description="Résumés courts, technologies vérifiées et cartes sans images. Les détails individuels suivent la liste." />
+    <ul class="project-grid">{projects.map(project => <li><ProjectCard locale="fr" project={project} /></li>)}</ul>
+  </section>
+  <section aria-labelledby="details-heading">
+    <SectionHeading id="details-heading" title="Problèmes, fonctionnalités et limites" />
+    <div class="stack">{projects.map(project => <article class="skill-group reading-width"><h3>{project.title}</h3><p>{project.problem.fr}</p><h4>Fonctionnalités du projet</h4><ol>{project.features.fr.map(feature => <li>{feature}</li>)}</ol><h4>Limites</h4><ol>{project.limitations.fr.map(limitation => <li>{limitation}</li>)}</ol></article>)}</div>
+  </section>
+  <section aria-labelledby="relationships-heading">
+    <SectionHeading id="relationships-heading" title="Compétences et projets associés" description="Relations calculées depuis les données des projets. Les compétences fondées uniquement sur le CV ne reçoivent pas de lien GitHub artificiel." />
+    <ul>{skills.map(skill => <li><TechTag technology={skill.id} /> : {skill.projectIds.length ? skill.projectIds.map((id, index) => {
+      const project = projects.find(project => project.id === id);
+      return project ? <>{index > 0 && ' · '}<a href={localizedPath('fr', `/projects/${project.slug}`)}>{project.title}</a></> : null;
+    }) : 'CV — expérience Clinisys'}</li>)}</ul>
+  </section>
+</BaseLayout>

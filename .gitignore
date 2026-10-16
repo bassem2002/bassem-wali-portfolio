@@ -1,0 +1,23 @@
+node_modules/
+dist/
+.astro/
+.npm-cache/
+.env
+.env.*
+!.env.example
+*.log
+.qa/
+# Original documents are private inputs, never deployment assets.
+/*.pdf
+/photo.png
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+coverage/
+*.tmp
+*.bak
+*.old
+*.pem
+*.key
+credentials.json

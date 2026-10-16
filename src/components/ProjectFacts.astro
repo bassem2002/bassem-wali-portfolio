@@ -1,0 +1,10 @@
+---
+import type { Locale, Project } from '@/types/content';
+import { v2Copy } from '@/i18n/v2';
+interface Props { project: Project; locale: Locale }
+const { project, locale } = Astro.props;
+const labels = v2Copy[locale].facts;
+const facts = (['authentication', 'database', 'aiOrDataComponents'] as const).flatMap(key => project[key] ? [{ label: labels[key], text: project[key]![locale] }] : []);
+facts.push({ label: labels.testing, text: project.testing.description[locale] });
+---
+<dl class="project-facts">{facts.map(fact => <div><dt>{fact.label}</dt><dd>{fact.text}</dd></div>)}</dl>

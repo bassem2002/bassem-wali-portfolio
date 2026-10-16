@@ -1,0 +1,39 @@
+---
+import { profile } from '@/data/profile';
+import { localizedPath } from '@/i18n/routes';
+import type { Locale } from '@/types/content';
+import Button from './ui/Button.astro';
+import ProfileContacts from './ProfileContacts.astro';
+import Portrait from './Portrait.astro';
+import { v2Copy } from '@/i18n/v2';
+import { v3Copy } from '@/i18n/v3';
+interface Props { locale: Locale; headingLevel?: 1 | 2 }
+const { locale, headingLevel = 1 } = Astro.props;
+const Heading = `h${headingLevel}` as 'h1' | 'h2';
+const copy = v2Copy[locale].hero;
+const v3 = v3Copy[locale];
+---
+<div class="hero hero-v3 v3-surface">
+  <div class="hero__identity">
+    <p class="eyebrow">{profile.status[locale]}</p>
+    <Heading class="type-display hero__title">{profile.name}</Heading>
+    <p class="hero__headline">{copy.positioning}<br /><span>{copy.fullStack}</span></p>
+    <p class="hero__secondary"><span>Business Intelligence</span><span class="hero__axis-separator" aria-hidden="true"> · </span><span>{v3.ai}</span></p>
+    <p class="hero__value">{v3.value}</p>
+    <div class="cluster hero__actions">
+      <Button href={localizedPath(locale, '/projects/')} icon="arrow-right">{copy.projects}</Button>
+      <Button variant="secondary" href={`${localizedPath(locale)}#contact`}>{copy.contact}</Button>
+    </div>
+  </div>
+  <div class="hero__profile">
+  <div class="portrait-stage">
+    <span class="portrait-stage__orbit" aria-hidden="true"></span>
+    <span class="portrait-stage__grid" aria-hidden="true"></span>
+    <figure class="hero__portrait"><div class="portrait-stage__crop"><Portrait locale={locale} eager size="hero" /></div><figcaption>{profile.location[locale]}</figcaption></figure>
+    <div class="engineering-float engineering-float--stack"><span class="engineering-float__icon" aria-hidden="true">&lt;/&gt;</span><div><strong>Full-Stack</strong><span>NestJS · Angular</span></div></div>
+    <div class="engineering-float engineering-float--data"><span class="engineering-float__icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V12M12 20V4M20 20V8" /></svg></span><div><strong>{v3.bi}</strong><span>SSAS · MDX</span></div></div>
+    <div class="engineering-float engineering-float--ai"><span class="engineering-float__icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="7" y="7" width="10" height="10" rx="2" /><path d="M9 3V7M15 3V7M9 17V21M15 17V21M3 9H7M3 15H7M17 9H21M17 15H21" /></svg></span><strong>{v3.ai}</strong></div>
+  </div>
+  <ProfileContacts locale={locale} />
+  </div>
+</div>

@@ -1,0 +1,39 @@
+---
+import type { Locale, Project } from '@/types/content';
+import { homeCardTechnologies } from '@/data/home';
+import { localizedPath } from '@/i18n/routes';
+import { ui } from '@/i18n/ui';
+import { v3Copy } from '@/i18n/v3';
+import ShowcaseVisual from './ShowcaseVisual.astro';
+import TechTag from './ui/TechTag.astro';
+import ExternalLink from './ui/ExternalLink.astro';
+import TextLink from './ui/TextLink.astro';
+import VideoDemoLink from './VideoDemoLink.astro';
+interface Props { project: Project; locale: Locale; headingLevel?: 2 | 3 }
+const { project, locale, headingLevel = 3 } = Astro.props;
+const Heading = `h${headingLevel}` as 'h2' | 'h3';
+const path = localizedPath(locale, `/projects/${project.slug}`);
+const allTags = homeCardTechnologies[project.id] ?? project.technologies;
+const tags = allTags.slice(0, 4);
+const remaining = Math.max(0, project.technologies.length - tags.length);
+const propositions: Record<string, Record<Locale, string>> = {
+  rezouette: { fr: 'Connecter ses comptes, préparer ses contenus et orchestrer leur publication sociale.', en: 'Connect accounts, prepare content and orchestrate social publishing.' },
+  smartalumni: { fr: 'Relier étudiants et mentors, avec un CV transformé en profil structuré.', en: 'Connect students and mentors, with a CV turned into a structured profile.' },
+  'enterprise-bi-dashboard': { fr: 'Explorer un cube SSAS à travers des filtres et des visualisations web.', en: 'Explore an SSAS cube through filters and web visualizations.' },
+  'min-draw-fx': { fr: 'Dessiner, transformer et retrouver chaque action dans un éditeur JavaFX.', en: 'Draw, transform and track each action in a JavaFX editor.' },
+  'waste-classification': { fr: 'Explorer la classification d’images de déchets par fusion de réseaux CNN.', en: 'Explore waste-image classification through CNN feature fusion.' },
+};
+---
+<article class:list={['project-card', 'project-card--featured', 'showcase-card', `showcase-card--${project.id}`]} data-project={project.id} data-domain={project.categories[0]} data-technologies={project.technologies.join(' ')}>
+  <ShowcaseVisual projectId={project.id} locale={locale} />
+  <div class="showcase-card__body">
+    <p class="project-card__angle">{project.angle[locale]}</p>
+    <Heading class="project-card__title"><a href={path}>{project.shortTitle ?? project.title}</a></Heading>
+    <p class="project-card__summary">{propositions[project.id]?.[locale] ?? project.shortDescription[locale]}</p>
+    <VideoDemoLink project={project} locale={locale} />
+    <p class="relation-label" data-relation-label hidden></p>
+    <ul class="project-card__highlights">{project.highlights[locale].slice(0, 2).map(point => <li>{point}</li>)}</ul>
+    <div class="cluster showcase-card__tags" aria-label={ui[locale].technologies}>{tags.map(id => <TechTag locale={locale} technology={id} />)}{remaining > 0 && <span class="showcase-card__more">+{remaining}<span class="sr-only"> {v3Copy[locale].more}</span></span>}</div>
+    <footer class="project-card__footer"><ExternalLink href={project.githubUrl}>GitHub<span class="sr-only"> — {project.title}</span></ExternalLink><TextLink href={`${path}#case-study-heading`}>{ui[locale].caseStudy}<span class="sr-only"> — {project.title}</span></TextLink></footer>
+  </div>
+</article>

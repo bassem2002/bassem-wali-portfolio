@@ -1,0 +1,17 @@
+---
+import { skills } from '@/data/skills';
+import { projectsDemonstrating } from '@/utils/projects';
+import { localizedPath } from '@/i18n/routes';
+import type { Locale, SkillCategory } from '@/types/content';
+import TechTag from './ui/TechTag.astro';
+interface Props { group: SkillCategory; title: string; locale: Locale }
+const { group, title, locale } = Astro.props;
+const demonstrated = skills.filter(skill => skill.category === group && skill.projectIds.length > 0);
+---
+<div class="skill-group">
+  <h3>{title}</h3>
+  <ul>{demonstrated.map(skill => {
+    const project = projectsDemonstrating(skill.id)[0];
+    return project ? <li><TechTag locale={locale} technology={skill.id} href={localizedPath(locale, `/projects/${project.slug}`)} /></li> : null;
+  })}</ul>
+</div>

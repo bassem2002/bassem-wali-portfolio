@@ -1,0 +1,48 @@
+import type { Locale } from '@/types/content';
+
+const fr = {
+  skip: 'Aller au contenu', home: 'Accueil', projects: 'Projets',
+  allProjects: 'Tous les projets', featured: 'Projets phares',
+  viewProjects: 'Voir mes projets',
+  contact: 'Contact', details: 'Détails du projet', repository: 'Voir le code sur GitHub',
+  back: 'Retour aux projets', technologies: 'Technologies',
+  capabilities: 'Fonctionnalités du projet', limitations: 'Limites connues',
+  tests: 'Tests', architecture: 'Architecture',
+  theme: 'Changer le thème', themeLight: 'Passer au mode clair', themeDark: 'Passer au mode sombre',
+  downloadCv: 'Télécharger le CV', cvUnavailable: 'CV public bientôt disponible',
+  education: 'Formation', experience: 'Expériences professionnelles',
+  caseStudy: 'Étude de cas', notFound: 'Page introuvable',
+  notFoundDescription: 'Cette adresse ne correspond à aucune page du portfolio.',
+  mainNavigation: 'Navigation principale', skills: 'Compétences', about: 'À propos',
+  copyEmail: 'Copier l’email', copied: 'Adresse email copiée.', copyFailed: 'Copie indisponible. Vous pouvez sélectionner l’adresse email ci-dessus.',
+  languages: 'Langues', currentLanguage: 'Langue active : français',
+  technologyProjects: 'Technologies ↔ Projets', technologyHint: 'Choisissez une technologie pour retrouver les projets qui l’utilisent. Les projets phares correspondants sont aussi mis en évidence.',
+  showAll: 'Tout afficher', allMatches: 'Toutes les correspondances sont affichées.',
+  usesTechnology: '✓ Utilise {technology}', otherTechnology: 'Autre technologie que {technology}',
+  matchingOne: '{count} projet utilise {technology}.', matchingMany: '{count} projets utilisent {technology}.',
+  allProjectsCta: 'Voir tous les projets', featuredBadge: 'Projet phare',
+};
+type Dictionary = Record<keyof typeof fr, string>;
+const en: Dictionary = {
+  skip: 'Skip to content', home: 'Home', projects: 'Projects',
+  allProjects: 'All Projects', featured: 'Featured Projects',
+  viewProjects: 'View Projects',
+  contact: 'Contact', details: 'View Project', repository: 'View on GitHub',
+  back: 'Back to Projects', technologies: 'Technologies',
+  capabilities: 'Project features', limitations: 'Known limitations',
+  tests: 'Testing', architecture: 'Architecture',
+  theme: 'Change theme', themeLight: 'Switch to light mode', themeDark: 'Switch to dark mode',
+  downloadCv: 'Download CV', cvUnavailable: 'Public CV pending',
+  education: 'Education', experience: 'Professional experience',
+  caseStudy: 'Read Case Study', notFound: 'Page not found',
+  notFoundDescription: 'This address does not match a portfolio page.',
+  mainNavigation: 'Main navigation', skills: 'Skills', about: 'About',
+  copyEmail: 'Copy Email', copied: 'Email address copied.', copyFailed: 'Copy is unavailable. You can select the email address above.',
+  languages: 'Languages', currentLanguage: 'Current language: English',
+  technologyProjects: 'Technologies ↔ Projects', technologyHint: 'Choose a technology to find the projects that use it. Matching featured projects are highlighted too.',
+  showAll: 'Show all', allMatches: 'All matching projects are shown.',
+  usesTechnology: '✓ Uses {technology}', otherTechnology: 'Uses a different technology from {technology}',
+  matchingOne: '{count} project uses {technology}.', matchingMany: '{count} projects use {technology}.',
+  allProjectsCta: 'View All Projects', featuredBadge: 'Featured Project',
+};
+export const ui: Record<Locale, Dictionary> = { fr, en };

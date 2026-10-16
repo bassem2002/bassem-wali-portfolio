@@ -1,0 +1,107 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ProjectList from '@/components/ProjectList.astro';
+import { projects } from '@/data/projects';
+import { ui } from '@/i18n/ui';
+import type { Locale } from '@/types/content';
+import { categories } from '@/data/categories';
+import { technologyNames } from '@/data/skills';
+import { usedCategories, usedTechnologies } from '@/utils/projects';
+import { pageCopy } from '@/i18n/pages';
+import { localizedPath } from '@/i18n/routes';
+import '@/styles/projects.css';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const copy = pageCopy[locale];
+const description = copy.projectsDescription;
+const technologies = usedTechnologies().sort((a, b) => (technologyNames.get(a) ?? a).localeCompare(technologyNames.get(b) ?? b, 'fr'));
+const popular = ['spring-boot', 'angular', 'laravel', 'pytorch', 'tensorflow', 'ssas', 'javafx', 'flutter'].filter(id => technologies.includes(id));
+const rows = projects.map(project => ({
+  id: project.id, categories: project.categories, technologies: project.technologies,
+  text: [project.title, project.shortTitle ?? '', project.summary[locale], ...project.categories.map(id => categories[id][locale]), ...project.technologies.map(id => technologyNames.get(id) ?? id)].join(' '),
+}));
+---
+<BaseLayout locale={locale} title={ui[locale].allProjects} description={description}>
+  <div class="projects-page v3-catalogue featured-v3" data-projects-page data-count-one={copy.countOne} data-count-many={copy.countMany}>
+  <a class="text-link" href={localizedPath(locale)}>← {copy.backHome}</a>
+  <header class="projects-page__hero"><p class="eyebrow">{locale === 'fr' ? 'Logiciel · données · systèmes' : 'Software · data · systems'}</p><h1>{ui[locale].allProjects}</h1>
+    <p class="projects-intro">{copy.projectsIntro}</p></header>
+    <div class="project-search catalogue-search" data-project-search hidden>
+      <label for="project-search">{copy.searchLabel}</label>
+      <input id="project-search" type="search" maxlength="160" placeholder={copy.searchPlaceholder} />
+      <p class="filter-help">{copy.filterHelp}</p>
+    </div>
+    <details class="projects-filter-disclosure" data-project-filters hidden>
+    <summary>{copy.filterProjects}</summary>
+    <div class="project-filters">
+      <fieldset>
+        <legend>{copy.domain}</legend>
+        <div class="filter-options">
+          <button class="tech-tag" type="button" data-category="" aria-pressed="true">{copy.all}</button>
+          {usedCategories().map(id => <button class="tech-tag" type="button" data-category={id} aria-pressed="false">{categories[id][locale]}</button>)}
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>{copy.technology}</legend>
+        <div class="filter-options">
+          {popular.map(id => <button class="tech-tag" type="button" data-tech={id} aria-pressed="false">{technologyNames.get(id)}</button>)}
+        </div>
+        <label for="project-technology">{copy.stackLabel}</label>
+        <select id="project-technology"><option value="">{copy.allTechnologies}</option>{technologies.map(id => <option value={id}>{technologyNames.get(id) ?? id}</option>)}</select>
+      </fieldset>
+      <button type="button" class="button button--secondary" data-reset>{copy.reset}</button>
+    </div>
+    </details>
+    <noscript><p>{copy.noJs}</p></noscript>
+    <p class="projects-count" role="status" aria-live="polite" aria-atomic="true" data-project-count>{copy.initialCount}</p>
+    <div class="projects-empty" data-project-empty hidden><h2>{copy.emptyTitle}</h2><p>{copy.emptyHint}</p><button type="button" class="button button--secondary" data-reset>{copy.showAllProjects}</button></div>
+    <script type="application/json" data-project-index set:html={JSON.stringify(rows).replace(/</g, '\\u003c')} />
+  <ProjectList locale={locale} projects={projects} />
+  </div>
+</BaseLayout>
+
+<script>
+  import { formatMessage } from '@/i18n/pages';
+  import { matchesProject, readFilters, writeFilters } from '@/utils/project-filters';
+  import type { FilterRow } from '@/utils/project-filters';
+  const root = document.querySelector<HTMLElement>('[data-projects-page]');
+  const payload = root?.querySelector('[data-project-index]');
+  if (root && payload) {
+    const rows: FilterRow[] = JSON.parse(payload.textContent ?? '[]');
+    const controls = root.querySelector<HTMLDetailsElement>('[data-project-filters]')!;
+    const search = root.querySelector<HTMLInputElement>('#project-search')!;
+    const select = root.querySelector<HTMLSelectElement>('#project-technology')!;
+    const cards = root.querySelectorAll<HTMLElement>('[data-project-id]');
+    let state = readFilters(new URLSearchParams(location.search), rows);
+    function render() {
+      let count = 0;
+      cards.forEach(card => {
+        const row = rows.find(row => row.id === card.dataset.projectId);
+        card.hidden = !row || !matchesProject(row, state);
+        if (!card.hidden) count++;
+      });
+      root!.querySelector('[data-project-count]')!.textContent = formatMessage((count === 1 ? root!.dataset.countOne : root!.dataset.countMany)!, { count, total: rows.length });
+      root!.querySelector<HTMLElement>('[data-project-empty]')!.hidden = count !== 0;
+      root!.querySelectorAll<HTMLButtonElement>('[data-category]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.category === state.category)));
+      root!.querySelectorAll<HTMLButtonElement>('[data-tech]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.tech === state.technology)));
+      select.value = state.technology;
+      if (search.value !== state.q) search.value = state.q;
+    }
+    function update(mode: 'push' | 'replace' = 'push') {
+      const query = writeFilters(state);
+      const url = location.pathname + (query ? `?${query}` : '') + location.hash;
+      if (url !== location.pathname + location.search + location.hash) history[mode === 'push' ? 'pushState' : 'replaceState'](null, '', url);
+      render();
+    }
+    root.querySelectorAll<HTMLButtonElement>('[data-category]').forEach(button => button.addEventListener('click', () => { state.category = button.dataset.category ?? ''; update(); }));
+    root.querySelectorAll<HTMLButtonElement>('[data-tech]').forEach(button => button.addEventListener('click', () => { state.technology = state.technology === button.dataset.tech ? '' : button.dataset.tech ?? ''; update(); }));
+    select.addEventListener('change', () => { state.technology = select.value; update(); });
+    search.addEventListener('input', () => { state.q = search.value; update('replace'); });
+    root.querySelectorAll('[data-reset]').forEach(button => button.addEventListener('click', () => { state = { category: '', technology: '', q: '' }; update(); search.focus(); }));
+    window.addEventListener('popstate', () => { state = readFilters(new URLSearchParams(location.search), rows); render(); });
+    update('replace');
+    controls.open = Boolean(state.category || state.technology || state.q);
+    controls.hidden = false;
+    root.querySelector<HTMLElement>('[data-project-search]')!.hidden = false;
+  }
+</script>

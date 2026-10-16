@@ -1,0 +1,10 @@
+---
+import ProjectCard from './ProjectCard.astro';
+import ShowcaseCard from './ShowcaseCard.astro';
+import type { Locale, Project } from '@/types/content';
+interface Props { locale: Locale; projects: readonly Project[] }
+const { locale, projects } = Astro.props;
+---
+<ul class="project-grid catalogue-grid">
+  {projects.map(project => <li data-project-id={project.id} data-featured={project.featured}>{project.featured ? <ShowcaseCard locale={locale} project={project} headingLevel={2} /> : <ProjectCard locale={locale} project={project} headingLevel={2} />}</li>)}
+</ul>

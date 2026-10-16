@@ -1,0 +1,26 @@
+---
+import { profile } from '@/data/profile';
+import { ui } from '@/i18n/ui';
+import type { Locale } from '@/types/content';
+interface Props { locale: Locale }
+const labels = ui[Astro.props.locale];
+---
+<div class="copy-email">
+  <button class="button button--secondary" type="button" data-copy-email data-email={profile.email} data-success={labels.copied} data-failure={labels.copyFailed} hidden>{labels.copyEmail}</button>
+  <span class="type-small muted" role="status" data-copy-status></span>
+</div>
+<script>
+  const button = document.querySelector<HTMLButtonElement>('[data-copy-email]');
+  const status = document.querySelector<HTMLElement>('[data-copy-status]');
+  if (button && status && navigator.clipboard) {
+    button.hidden = false;
+    button.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(button.dataset.email ?? '');
+        status.textContent = button.dataset.success ?? '';
+      } catch {
+        status.textContent = button.dataset.failure ?? '';
+      }
+    });
+  }
+</script>

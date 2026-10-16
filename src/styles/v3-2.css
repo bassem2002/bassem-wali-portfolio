@@ -1,0 +1,230 @@
+/* V3.2: one product-oriented system across every public section. */
+:root { --radius-sm: .65rem; --radius-md: 1.25rem; --section-gap: clamp(4.5rem, 7vw, 7rem); }
+.container { width: min(95rem, calc(100% - var(--v31-gutter) * 2)); }
+.homepage > section:not(#projects) { max-width: none; }
+.homepage .section-heading h2 { font-size: clamp(2.2rem, 3.6vw, 3.5rem); line-height: 1.1; letter-spacing: -.055em; }
+.homepage .section-heading > p { font-size: 1rem; max-width: 44ch; }
+.homepage .hero-v3 .hero__identity > .eyebrow { font-size: clamp(1rem, 1.1vw, 1.1875rem); font-weight: 650; letter-spacing: .015em; color: var(--color-text); margin-bottom: 1.5rem; }
+.homepage .hero-v3 .hero__headline, .homepage .hero-v3 .hero__secondary { font-size: clamp(1.65rem, 2.35vw, 2.5rem); font-weight: 650; line-height: 1.2; letter-spacing: -.05em; }
+.homepage .hero-v3 .hero__headline { margin-bottom: .4rem; }
+.homepage .hero-v3 .hero__secondary { color: var(--color-primary); margin-bottom: 1.5rem; max-width: none; }
+.hero__secondary > span:not(.hero__axis-separator) { display: inline-block; }
+.homepage .hero-v3 .hero__title { margin-bottom: 1.5rem; }
+.button { border-radius: .65rem; transition: background-color 200ms ease, color 200ms ease, transform 200ms ease; }
+.button--secondary { background: var(--color-surface); }
+.tech-tag { border-radius: .4rem; }
+
+/* Focus has an editorial lead pair and two lower, horizontal compositions. */
+.homepage .focus-grid { gap: 1.5rem; }
+.homepage .focus-grid .engineering-focus { border: 0; border-radius: 1.5rem; padding: clamp(1.5rem, 3vw, 2.5rem); gap: 1.25rem; }
+.homepage .focus-grid .engineering-focus h3 { font-size: clamp(1.65rem, 2.6vw, 2.5rem); letter-spacing: -.05em; margin-bottom: .8rem; }
+.homepage .focus-grid .engineering-focus p { font-size: 1rem; line-height: 1.65; max-width: 50ch; }
+.homepage .focus-grid [data-focus='software'] { background: var(--color-text); --color-muted: var(--color-bg); color: var(--color-bg); }
+.homepage .focus-grid [data-focus='software'] .focus-mechanism li { background: transparent; color: inherit; }
+.homepage .focus-grid [data-focus='software'] .tech-tag { color: inherit; background: transparent; border-color: currentColor; }
+.homepage .focus-grid [data-focus='software'] a { color: inherit; }
+.homepage .focus-grid [data-focus='software'] :focus-visible { outline-color: currentColor; }
+.homepage .focus-grid [data-focus='full-stack'] { background: var(--color-surface); }
+.homepage .focus-grid [data-focus='bi'] { background: transparent; border-radius: 0; border-top: 2px solid var(--color-primary); }
+.homepage .focus-grid [data-focus='ai'] { background: var(--color-soft); }
+.homepage .focus-mechanism { min-height: 0; padding: .25rem 0; gap: .5rem; }
+.homepage .focus-mechanism li { border: 0; padding: .4rem .65rem; font-size: .8125rem; border-radius: .35rem; }
+.homepage .focus-mechanism li:nth-child(2) { font-weight: 700; }
+.homepage .focus-grid [data-focus='bi'] .focus-mechanism { border: 0; padding-left: 0; }
+.homepage .focus-grid [data-focus='full-stack'] .focus-mechanism li { border: 0; }
+.homepage .focus-grid .engineering-focus .tech-tag { font-size: .8125rem; padding: .3rem .5rem; }
+.homepage .focus-grid .engineering-focus .text-link { font-size: .9375rem; }
+.focus-evidence > .cluster:last-child { margin-top: .5rem; gap: .4rem 1.5rem; }
+
+/* Compact knowledge groups lead into the interactive technology explorer. */
+.homepage .home-skills { gap: 1rem; }
+.homepage .home-skills .skill-group { padding: 1.25rem; background: var(--color-surface); border-radius: .85rem; border: 0; }
+.homepage .home-skills h3 { font-size: 1rem; margin-bottom: .75rem; }
+.homepage .home-skills ul { display: flex; flex-wrap: wrap; gap: .35rem; padding: 0; list-style: none; }
+.homepage .home-skills li { margin: 0; }
+.homepage .home-skills a.tech-tag { background: var(--color-bg); border-color: transparent; font: 500 .875rem var(--font-sans); padding-inline: .7rem; }
+.homepage .home-skills a.tech-tag:hover { background: var(--color-selected); }
+.homepage .technology-projects { border: 0; padding: clamp(1.5rem, 3.5vw, 3rem); background: var(--color-surface); border-radius: 1.5rem; }
+.homepage .technology-projects h3 { font-size: clamp(1.5rem, 2.5vw, 2.3rem); letter-spacing: -.045em; }
+.homepage .technology-projects > .muted { font-size: .9375rem; }
+.homepage .technology-controls { gap: .5rem; }
+.homepage .technology-controls .tech-tag, .homepage .technology-controls .button { min-height: 46px; padding: .65rem .9rem; background: var(--color-bg); border: 1px solid var(--color-control-border); font: 550 .9375rem var(--font-sans); border-radius: .6rem; }
+.homepage .technology-controls [aria-pressed='true'] { background: var(--color-primary); color: var(--color-primary-ink); border-color: var(--color-primary); text-decoration: none; }
+.homepage .technology-results { gap: .35rem 1.5rem; }
+.homepage .technology-results li { border: 0; }
+.homepage .technology-results a { padding: .7rem .8rem; min-height: 46px; border-radius: .5rem; font-size: .9375rem; background: var(--color-bg); text-decoration: none; }
+.homepage .technology-results a:hover { background: var(--color-selected); text-decoration: underline; }
+.homepage .technology-status { font-size: .875rem; }
+.homepage .showcase-card[data-relation='muted'] .showcase-art { filter: saturate(.35); }
+.featured-v3 .showcase-card:has(.video-demo-link) .project-card__footer .text-link:last-child:hover { color: var(--v3-hover); }
+
+/* Chronology is a timeline, education is a uniform four-card grid. */
+.homepage .experience-timeline > li { padding-left: 2rem; border-left-color: var(--color-border); }
+.homepage .experience-timeline > li::before { top: 2.8rem; width: 10px; height: 10px; left: -5.5px; }
+.homepage .experience-timeline .experience-item { padding-block: 2.5rem; gap: 2rem; border-bottom: 1px solid var(--color-border); }
+.homepage .experience-year { font-size: clamp(2.25rem, 4vw, 4rem); font-weight: 700; margin-bottom: .65rem; }
+.homepage .experience-date p { font-size: .875rem; }
+.homepage .experience-item h3 { font-size: 1.75rem; margin-bottom: .5rem; }
+.homepage .experience-item > div:last-child > p { font-size: 1rem; max-width: 65ch; }
+.homepage .experience-item .text-link { font-size: .9375rem; }
+.homepage .experience-item .tech-tag { font-size: .8125rem; padding: .3rem .55rem; background: var(--color-surface); }
+.homepage .experience-project { font-weight: 600; }
+.homepage .home-education { gap: 1.5rem; grid-auto-rows: 1fr; }
+.homepage .home-education > li { display: flex; grid-column: auto; }
+.homepage .home-education .education-card { display: flex; flex-direction: column; gap: 1rem; width: 100%; height: 100%; min-height: 13.5rem; padding: clamp(1.25rem, 2vw, 2rem); border: 1px solid var(--color-border); border-radius: 1.1rem; background: var(--color-surface); transition: transform 200ms ease, border-color 200ms ease; }
+.homepage .home-education .education-card:hover { transform: translateY(-3px); border-color: var(--color-control-border); }
+.education-card__meta { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem 1.5rem; }
+.education-card__meta p { margin: 0; font-size: .875rem; color: var(--color-muted); }
+.education-card__meta p:first-child { color: var(--color-primary); font-weight: 700; }
+.homepage .home-education .education-card h3 { font-size: clamp(1.35rem, 2vw, 1.8rem); margin-bottom: .8rem; letter-spacing: -.045em; }
+.homepage .home-education .education-card > div:last-child > p { font-size: 1rem; margin-bottom: .5rem; }
+.homepage .home-education .education-card > div:last-child > p.muted { font-size: .9375rem; }
+
+.homepage #about .reading-width { max-width: 72ch; }
+.homepage #about .reading-width > p:not(.about-languages) { font-size: clamp(1.05rem, 1.5vw, 1.3rem); line-height: 1.7; }
+.homepage .about-languages { font-size: .9375rem; border-top: 1px solid var(--color-border); }
+.homepage .home-contact { --color-bg: #0b1a35; --color-text: #f8fafc; --color-muted: #c3cee0; --color-primary: #b3d0ff; --color-primary-hover: #dbeafe; --color-primary-ink: #071326; --color-control-border: #8293ae; --color-focus: #b3d0ff; background: linear-gradient(125deg, #102b59, #081326 85%); border-radius: 1.5rem; padding: clamp(1.5rem, 4vw, 4rem); gap: 2rem; }
+.homepage .home-contact .section-heading h2 { font-size: clamp(2rem, 3.8vw, 3.6rem); max-width: 19ch; }
+.homepage .home-contact .contact-email { font-size: clamp(1.05rem, 2.2vw, 2rem); margin-top: 0; color: var(--color-text); }
+.homepage .home-contact .contact-actions > p { margin-bottom: 1.5rem; }
+.homepage .home-contact .text-link { color: var(--color-primary); }
+.homepage .home-contact .button--primary { color: var(--color-primary-ink); background: var(--color-primary); }
+.homepage .home-contact .button--secondary { background: transparent; color: var(--color-text); }
+.homepage .home-contact .button--secondary:hover { background: var(--color-text); color: var(--color-bg); }
+
+/* Discoverable gallery: search first, expandable criteria, distinct card types. */
+.v3-catalogue .projects-page__hero { max-width: none; margin: .5rem 0 1.5rem; }
+.v3-catalogue .projects-page__hero h1 { font-size: clamp(2.75rem, 4.5vw, 4.5rem); margin-bottom: 1rem; }
+.v3-catalogue .projects-page__hero .eyebrow { margin-bottom: .65rem; }
+.v3-catalogue .projects-intro { font-size: 1rem; max-width: 64ch; margin-bottom: 0; }
+:root[data-js] [data-project-search][hidden] { display: block !important; visibility: hidden; }
+.catalogue-search { max-width: 50rem; margin-bottom: 1rem; }
+.catalogue-search label { display: block; font-size: .9375rem; font-weight: 650; margin-bottom: .5rem; }
+.catalogue-search input { width: 100%; min-height: 52px; padding: .8rem 1rem; border: 1px solid var(--color-control-border); border-radius: .75rem; background: var(--color-surface); color: var(--color-text); font: inherit; }
+.v3-catalogue .projects-filter-disclosure { margin-top: 1rem; }
+.v3-catalogue .projects-filter-disclosure > summary { width: fit-content; min-width: 15rem; background: var(--color-surface); border: 1px solid var(--color-control-border); }
+.v3-catalogue .project-filters { padding: 1.5rem; border: 0; background: var(--color-surface); border-radius: 1rem; margin-bottom: 1.5rem; }
+.v3-catalogue .project-filters .tech-tag { font: 550 .875rem var(--font-sans); background: var(--color-bg); border-radius: .5rem; }
+.v3-catalogue .project-filters [aria-pressed='true'] { background: var(--color-primary); color: var(--color-primary-ink); }
+.v3-catalogue .projects-count { margin-block: 1.5rem; font-size: .9375rem; }
+.v3-catalogue .catalogue-grid { gap: 1.5rem; }
+.v3-catalogue .showcase-card { padding: 0; display: flex; flex-direction: column; gap: 0; border: 1px solid var(--color-border); border-radius: 1.3rem; background: var(--color-surface); overflow: visible; transition: transform 200ms ease, border-color 200ms ease; }
+.v3-catalogue .showcase-card:hover { transform: translateY(-3px); border-color: var(--color-control-border); }
+.v3-catalogue .project-card:not(.showcase-card) { padding: 1.5rem; gap: 1rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: .9rem; }
+.v3-catalogue .project-card:not(.showcase-card) .project-card__title { font-size: 1.5rem; }
+.v3-catalogue .project-card:not(.showcase-card) .project-card__angle { font-size: .875rem; }
+.v3-catalogue .project-card__summary { font-size: 1rem; }
+.v3-catalogue .project-card__highlights { font-size: .9375rem; }
+.v3-catalogue .project-card .tech-tag { font-size: .8125rem; background: var(--color-soft); border: 0; }
+.v3-catalogue .project-card .technical-label { font-size: .8125rem; font-family: var(--font-sans); }
+.v3-catalogue .project-card__footer { margin-top: auto; }
+.v3-catalogue .project-card__footer .text-link { font-size: .9375rem; }
+.v3-catalogue .projects-empty { background: var(--color-surface); border: 0; border-radius: 1rem; }
+
+/* Product-specific case heroes; technical diagrams and facts remain in the body. */
+main:has(> .case-study) { padding-top: 2rem; }
+.case-study .case-hero { padding-block: .5rem 2.5rem; }
+.case-study .case-hero h1 { font-size: clamp(2.5rem, 4.5vw, 4.75rem); }
+.case-study .case-hero .showcase-art { margin: 0; padding: 1rem 1rem 2rem; border-radius: 1.4rem; border: 1px solid var(--color-border); }
+.case-study .case-hero .showcase-art svg { height: auto; max-height: 360px; }
+.case-study .case-hero .lead { font-size: 1.0625rem; line-height: 1.7; }
+.case-study .case-navigation { padding: .5rem; background: var(--color-surface); border-color: var(--color-border); }
+.case-study .case-navigation ul { gap: .4rem; }
+.case-study .case-navigation a { font-size: .9375rem; padding: .65rem 1rem; border-radius: .6rem; }
+.case-study .case-navigation a:hover { background: var(--color-soft); text-decoration: none; }
+.case-study .case-navigation a[aria-current='location'] { color: var(--color-primary-ink); background: var(--color-primary); text-decoration: none; }
+.case-study .case-body { max-width: none; }
+.case-study .case-body > section { margin-block: 4rem; }
+.case-study .case-body h2 { font-size: clamp(1.7rem, 2.7vw, 2.6rem); }
+.case-study .case-intro { font-size: 1.1rem; max-width: 72ch; }
+.case-study .case-journey { gap: 1.5rem; }
+.case-study .case-journey li { padding: 1.5rem; border: 0; border-radius: 1rem; background: var(--color-surface); }
+.case-study .case-journey h3 { font-size: 1.2rem; }
+.case-study .case-journey p { font-size: .9375rem; line-height: 1.7; }
+.case-study .case-features { display: grid; gap: 1rem 2rem; max-width: none; padding: 0; list-style: none; }
+.case-study .case-features li { margin: 0; padding: 1rem 1.25rem; border-left: 2px solid var(--color-primary); background: var(--color-surface); border-radius: 0 .6rem .6rem 0; font-size: 1rem; }
+.case-study .project-facts { gap: 1.5rem; }
+.case-study .project-facts dt { font-size: .9375rem; }
+.case-study .project-facts dd { font-size: .9375rem; line-height: 1.7; }
+.case-study .architecture-diagram { padding: 1.5rem; background: var(--color-surface); border: 0; border-radius: 1.2rem; }
+.case-study .architecture-diagram svg { max-width: 26rem; }
+.case-study .architecture-diagram figcaption { font-size: .9375rem; line-height: 1.7; }
+.case-study .architecture-diagram summary { font-size: .9375rem; }
+.case-study .case-prose { max-width: none; font-size: 1.0625rem; line-height: 1.75; }
+.case-study .case-prose > p { max-width: 72ch; }
+.case-study .case-prose > ul { padding: 0; list-style: none; max-width: none; display: grid; gap: 1rem; }
+.case-study .case-prose > ul > li { margin: 0; padding: 1.25rem 1.5rem; background: var(--color-surface); border-radius: .8rem; border-left: 2px solid var(--color-border); max-width: 75ch; }
+.case-study .case-related li { padding: 1.5rem; background: var(--color-surface); border: 0; border-radius: .8rem; }
+.project-detail { max-width: 80rem; }
+.project-detail__intro { max-width: 72ch; }
+.project-detail__hero { padding: 1.5rem 0; }
+
+@media (min-width: 48rem) {
+  .homepage .experience-timeline .experience-item { grid-template-columns: minmax(0, 1fr) minmax(0, 3fr); }
+  .homepage .home-education { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .homepage #about { display: grid; grid-template-columns: 5fr 7fr; gap: 3rem; }
+  .homepage .home-contact { display: grid; grid-template-columns: 1fr 1fr; align-items: center; }
+  .case-study .case-features, .case-study .case-prose > ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 75rem) {
+  .homepage .focus-grid > :nth-child(3) { grid-column: span 5; }
+  .homepage .focus-grid > :nth-child(4) { grid-column: span 7; }
+  .homepage .focus-grid > :nth-child(n+3) { display: grid; grid-template-columns: 1fr 1fr; align-items: start; }
+  .homepage .focus-grid > :nth-child(n+3) .focus-mechanism { grid-column: 2; grid-row: 1; flex-direction: column; align-items: stretch; }
+  .homepage .focus-grid > :nth-child(n+3) > div:not(.focus-evidence) { grid-column: 1; grid-row: 1; }
+  .homepage .focus-grid > :nth-child(n+3) .focus-evidence { grid-column: 1 / -1; }
+  .homepage .home-skills { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .homepage .technology-projects { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: auto auto minmax(0, 1fr); align-items: start; gap: .75rem 2.5rem; }
+  .homepage .technology-projects h3 { grid-column: span 5; }
+  .homepage .technology-projects > p:first-of-type { grid-column: span 7; }
+  .homepage .technology-controls { display: grid; grid-template-columns: 1fr 1fr; grid-column: 1 / 6; grid-row: 2 / 4; margin-block: 1rem 0; align-content: start; }
+  .homepage .technology-controls [data-technology-reset] { grid-column: 1 / -1; }
+  .homepage .technology-status { grid-column: 6 / -1; grid-row: 2; margin-block: 1rem 0; }
+  .homepage .technology-results { grid-column: 6 / -1; grid-row: 3; grid-template-columns: repeat(2, minmax(0, 1fr)); align-content: start; }
+  .homepage .technology-fallback { grid-column: 1 / -1; }
+  .v3-catalogue .projects-page__hero { display: grid; grid-template-columns: 1fr 1fr; gap: .25rem 2rem; align-items: end; }
+  .v3-catalogue .projects-page__hero .eyebrow { grid-column: 1; }
+  .v3-catalogue .projects-page__hero h1 { grid-column: 1; margin: 0; }
+  .v3-catalogue .projects-intro { grid-column: 2; grid-row: 1 / 3; padding-bottom: .4rem; }
+  .v3-catalogue .catalogue-grid { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+  .v3-catalogue .catalogue-grid > li { grid-column: span 4; }
+  .v3-catalogue .catalogue-grid > li:nth-child(-n+2) { grid-column: span 6; }
+  .v3-catalogue .showcase-card .showcase-art svg { height: 220px; }
+  .v3-catalogue .catalogue-grid > li:nth-child(-n+2) .showcase-art svg { height: 250px; }
+}
+@media (max-width: 47.999rem) {
+  .homepage .hero-v3 .hero__identity > .eyebrow { font-size: .9375rem; line-height: 1.5; letter-spacing: 0; margin-bottom: 1rem; }
+  .homepage .hero-v3 .hero__headline, .homepage .hero-v3 .hero__secondary { font-size: clamp(1.35rem, 6.2vw, 1.8rem); line-height: 1.23; }
+  .hero__axis-separator { display: none; }
+  .hero__secondary > span:not(.hero__axis-separator) { display: block; }
+  .homepage .hero-v3 .hero__secondary { max-width: none; margin-bottom: 1rem; }
+  .homepage .hero-v3 .hero__actions { margin-top: 1.25rem; }
+  .hero-v3 .portrait-stage { height: 300px; }
+  .homepage .hero.hero-v3 .hero__portrait { width: 180px; }
+  .hero-v3 .portrait-stage__crop { height: 230px; }
+  .homepage .section-heading { gap: .75rem; margin-bottom: 1.5rem; }
+  .homepage .focus-grid .engineering-focus { padding: 1.5rem; }
+  .homepage .focus-grid .engineering-focus h3 { font-size: 1.7rem; }
+  .homepage .technology-projects { padding: 1.25rem; }
+  .homepage .technology-controls { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+  .homepage .technology-controls [data-technology-reset] { grid-column: 1 / -1; }
+  .homepage .technology-controls .tech-tag { font-size: .875rem; padding-inline: .5rem; }
+  .homepage .technology-results { grid-template-columns: minmax(0, 1fr); }
+  .homepage .experience-timeline > li { padding-left: 1.25rem; }
+  .homepage .experience-timeline .experience-item { padding-block: 2rem; gap: 1.25rem; }
+  .homepage .home-education { grid-template-columns: minmax(0, 1fr); }
+  .homepage .home-education .education-card { padding: 1.25rem; min-height: 12rem; }
+  .homepage .home-contact { padding: 1.5rem; }
+  .homepage .home-contact .contact-actions { margin-top: 1.5rem; }
+  .homepage .home-contact .contact-email { font-size: 1.05rem; }
+  .v3-catalogue .catalogue-grid { grid-template-columns: minmax(0, 1fr); }
+  .v3-catalogue .project-card:not(.showcase-card) { padding: 1.25rem; }
+  .v3-catalogue .project-card__highlights { font-size: .875rem; }
+  .v3-catalogue .showcase-card .project-card__title { font-size: 1.75rem; }
+  .case-study .case-navigation { overflow-wrap: anywhere; }
+  .case-study .case-navigation a { font-size: .875rem; padding: .6rem .7rem; }
+  .case-study .case-hero .showcase-art { padding-inline: .5rem; }
+  .case-study .architecture-diagram { padding: 1.25rem; }
+  .case-study .case-prose { font-size: 1rem; }
+  .case-study .case-prose > ul > li { padding: 1.25rem; }
+}

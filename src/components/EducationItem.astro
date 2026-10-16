@@ -1,0 +1,10 @@
+---
+import type { Education, Locale } from '@/types/content';
+interface Props { education: Education; locale: Locale }
+const { education, locale } = Astro.props;
+const { startYear, endYear } = education.period;
+---
+<article class="education-item education-card" data-education={education.id}>
+  <div class="education-card__meta"><p>{startYear === endYear ? startYear : `${startYear}–${endYear}`}</p><p>{education.location[locale]}</p></div>
+  <div><h3>{education.institution}</h3><p>{education.qualification[locale]}</p>{education.specialization && <p class="muted">{education.specialization[locale]}</p>}</div>
+</article>

@@ -1,0 +1,69 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/Hero.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import Button from '@/components/ui/Button.astro';
+import ExternalLink from '@/components/ui/ExternalLink.astro';
+import ShowcaseCard from '@/components/ShowcaseCard.astro';
+import EngineeringFocus from '@/components/EngineeringFocus.astro';
+import HomeSkillGroup from '@/components/HomeSkillGroup.astro';
+import TechnologyProjects from '@/components/TechnologyProjects.astro';
+import ExperienceItem from '@/components/ExperienceItem.astro';
+import EducationItem from '@/components/EducationItem.astro';
+import CopyEmail from '@/components/CopyEmail.astro';
+import { homeByLocale, homeEyebrows, homeSkillGroups } from '@/data/home';
+import { v3Copy } from '@/i18n/v3';
+import { profile } from '@/data/profile';
+import { engineeringFocus } from '@/data/engineering-focus';
+import { experiences } from '@/data/experience';
+import { education } from '@/data/education';
+import { featuredProjects } from '@/utils/projects';
+import { personSchema } from '@/utils/seo';
+import { ui } from '@/i18n/ui';
+import { localizedPath } from '@/i18n/routes';
+import type { Locale } from '@/types/content';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const home = homeByLocale[locale];
+const eyebrows = homeEyebrows[locale];
+const v3 = v3Copy[locale];
+---
+<BaseLayout locale={locale} title={home.title} description={home.description} schema={personSchema(locale)} homepage>
+  <Hero locale={locale} />
+  <section id="projects" class="featured-v3 v3-surface" aria-labelledby="projects-heading">
+    <SectionHeading id="projects-heading" title={v3.workTitle} eyebrow={v3.work} description={v3.workDescription} />
+    <ul class="project-grid featured-grid">{featuredProjects().map((project, index) => <li class:list={{ 'featured-grid__lead': index === 0 }}><ShowcaseCard project={project} locale={locale} /></li>)}</ul>
+    <div class="section-action"><Button variant="secondary" href={localizedPath(locale, '/projects/')} icon="arrow-right">{ui[locale].allProjectsCta}</Button></div>
+  </section>
+  <section id="expertise" aria-labelledby="expertise-heading">
+    <SectionHeading id="expertise-heading" title={home.sections.expertise.title} eyebrow={eyebrows[1] ?? ''} description={home.sections.expertise.description} />
+    <div class="focus-grid">{engineeringFocus.map(focus => <EngineeringFocus focus={focus} locale={locale} />)}</div>
+  </section>
+  <section id="skills" aria-labelledby="skills-heading">
+    <SectionHeading id="skills-heading" title={home.sections.skills.title} eyebrow={eyebrows[2] ?? ''} description={home.sections.skills.description} />
+    <div class="skill-grid home-skills">{homeSkillGroups.map(group => <HomeSkillGroup group={group} locale={locale} />)}</div>
+    <TechnologyProjects locale={locale} />
+  </section>
+  <section id="experience" aria-labelledby="experience-heading">
+    <SectionHeading id="experience-heading" title={home.sections.experience.title} eyebrow={eyebrows[3] ?? ''} description={home.sections.experience.description} />
+    <ul class="editorial-list experience-timeline">{experiences.map(experience => <li><ExperienceItem experience={experience} locale={locale} /></li>)}</ul>
+  </section>
+  <section id="education" aria-labelledby="education-heading">
+    <SectionHeading id="education-heading" title={home.sections.education.title} eyebrow={eyebrows[4] ?? ''} description={home.sections.education.description} />
+    <ul class="editorial-list home-education">{education.map(entry => <li><EducationItem education={entry} locale={locale} /></li>)}</ul>
+  </section>
+  <section id="about" aria-labelledby="about-heading">
+    <SectionHeading id="about-heading" title={home.sections.about.title} eyebrow={eyebrows[5] ?? ''} />
+    <div class="reading-width">{profile.about[locale].map(paragraph => <p>{paragraph}</p>)}<p class="about-languages"><span class="technical-label">{ui[locale].languages}</span> {profile.languages.map(language => language[locale]).join(' · ')}</p></div>
+  </section>
+  <section id="contact" aria-labelledby="contact-heading" class="home-contact">
+    <div class="contact-intro">
+    <SectionHeading id="contact-heading" title={home.sections.contact.title} eyebrow={eyebrows[6] ?? ''} />
+    <p class="lead muted">{profile.contactMessage[locale]}</p>
+    </div><div class="contact-actions">
+    <a class="contact-email" href={`mailto:${profile.email}`}>{profile.email}</a>
+    {profile.phone?.publicationApproved && <p><a class="text-link" href={`tel:${profile.phone.e164}`}>{locale === 'fr' ? 'Téléphone' : 'Phone'} : {profile.phone.display}</a></p>}
+    <div class="cluster"><Button href={`mailto:${profile.email}`} icon="arrow-right">{locale === 'fr' ? 'Me contacter' : 'Get in touch'}</Button><CopyEmail locale={locale} /><ExternalLink href={profile.links.linkedin}>LinkedIn</ExternalLink><ExternalLink href={profile.links.github}>GitHub</ExternalLink></div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,11 @@
+---
+import { skillName } from '@/i18n/skills';
+import type { Locale } from '@/types/content';
+import Icon from './Icon.astro';
+interface Props { technology: string; href?: string; selected?: boolean; locale?: Locale }
+const { technology, href, selected = false, locale = 'fr' } = Astro.props;
+const label = skillName(technology, locale);
+if (!label) throw new Error(`Unknown technology: ${technology}`);
+---
+{href ? <a class="tech-tag" href={href} data-selected={selected || undefined}>{selected && <Icon name="check" />}{label}</a>
+  : <span class="tech-tag" data-selected={selected || undefined}>{selected && <Icon name="check" />}{label}</span>}

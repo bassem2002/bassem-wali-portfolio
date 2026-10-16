@@ -1,0 +1,10 @@
+---
+import { Image } from 'astro:assets';
+import portrait from '@/assets/portrait.png';
+import { profile } from '@/data/profile';
+import type { Locale } from '@/types/content';
+interface Props { locale: Locale; eager?: boolean; size?: 'small' | 'hero' }
+const { locale, eager = false, size = 'small' } = Astro.props;
+const hero = size === 'hero';
+---
+{profile.portrait.approved && <Image src={portrait} alt={profile.portrait.alt[locale]} width={hero ? 280 : 160} height={hero ? 420 : 240} widths={hero ? [240, 400, 560] : [160, 320]} sizes={hero ? '(min-width: 48rem) 280px, 220px' : '160px'} format="webp" loading={eager ? 'eager' : 'lazy'} />}

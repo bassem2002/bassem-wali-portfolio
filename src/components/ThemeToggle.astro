@@ -1,0 +1,41 @@
+---
+import { ui } from '@/i18n/ui';
+import type { Locale } from '@/types/content';
+import Icon from './ui/Icon.astro';
+interface Props { locale: Locale }
+const labels = ui[Astro.props.locale];
+---
+<button class="theme-toggle" type="button" data-theme-toggle hidden data-light-label={labels.themeLight} data-dark-label={labels.themeDark} aria-label={labels.theme}>
+  <Icon name="theme" />
+  <span class="sr-only" data-theme-label>{labels.theme}</span>
+</button>
+<script>
+  function setupTheme() {
+    const button = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+    if (!button) return;
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+    let explicitChoice = false;
+    try { explicitChoice = ['light', 'dark'].includes(localStorage.getItem('theme') ?? ''); } catch { /* Storage may be unavailable. */ }
+    const update = () => {
+      const dark = document.documentElement.dataset.theme === 'dark' ||
+        (!document.documentElement.dataset.theme && media.matches);
+      const label = (dark ? button.dataset.lightLabel : button.dataset.darkLabel) ?? '';
+      button.setAttribute('aria-label', label);
+      const text = button.querySelector('[data-theme-label]');
+      if (text) text.textContent = label;
+    };
+    update();
+    button.hidden = false;
+    button.addEventListener('click', () => {
+      const dark = document.documentElement.dataset.theme === 'dark' ||
+        (!document.documentElement.dataset.theme && media.matches);
+      const next = dark ? 'light' : 'dark';
+      document.documentElement.dataset.theme = next;
+      explicitChoice = true;
+      try { localStorage.setItem('theme', next); } catch { /* Keep session behavior. */ }
+      update();
+    });
+    media.addEventListener('change', () => { if (!explicitChoice) update(); });
+  }
+  setupTheme();
+</script>

@@ -1,0 +1,51 @@
+---
+import { projectVisuals } from '@/data/project-visuals';
+import type { Locale } from '@/types/content';
+interface Props { projectId: string; locale: Locale }
+const { projectId, locale } = Astro.props;
+const copy = projectVisuals[projectId];
+const labels = copy?.labels[locale] ?? [];
+---
+{copy && <figure class={`project-visual project-visual--${projectId}`}>
+  <svg viewBox="0 0 420 240" role="img" aria-label={copy.title[locale]}>
+    <title>{copy.title[locale]}</title><desc>{copy.description[locale]}</desc>
+    <g class="visual-grid" aria-hidden="true"><path d="M0 60H420M0 120H420M0 180H420M70 0V240M140 0V240M210 0V240M280 0V240M350 0V240" /></g>
+    {projectId === 'rezouette' && <>
+      <path class="visual-wire" d="M128 68H152M264 68H288M344 90V145H72V158M128 180H152M264 180H288" />
+      {[0, 1, 2, 3, 4, 5].map((index) => <g class:list={['visual-node', { 'visual-node--accent': index === 1 || index === 4 }]} transform={`translate(${16 + (index % 3) * 136} ${index < 3 ? 44 : 158})`}><rect width="112" height="44" rx="10" /><text x="56" y="27" text-anchor="middle">{labels[index]}</text></g>)}
+      <circle class="visual-dot" cx="344" cy="118" r="5" /><path class="visual-ticks" d="M30 120h18M38 112v16M190 126h30M190 132h20" />
+    </>}
+    {projectId === 'smartalumni' && <>
+      <path class="visual-wire" d="M60 64H78M170 64H188M280 64H298M122 175H154M266 175H298" />
+      {[0, 1, 2, 3].map((index) => <g class:list={['visual-node', { 'visual-node--accent': index === 2 }]} transform={`translate(${index === 0 ? 12 : 78 + (index - 1) * 110} 42)`}><rect width={index === 0 ? 48 : 102} height="44" rx="10" /><text class="visual-text-small" x={index === 0 ? 24 : 51} y="27" text-anchor="middle">{labels[index]}</text></g>)}
+      <path class="visual-separator" d="M24 119H396" />
+      {[4, 5, 6].map((index) => <g class:list={['visual-node', { 'visual-node--accent': index === 5 }]} transform={`translate(${10 + (index - 4) * 140} 153)`}><rect width="124" height="44" rx="10" /><text x="62" y="27" text-anchor="middle">{labels[index]}</text></g>)}
+    </>}
+    {projectId === 'enterprise-bi-dashboard' && <>
+      <path class="visual-wire" d="M116 45H152M268 45H304V84M304 120V156H224M112 180H136" />
+      <g class="visual-node" transform="translate(12 24)"><rect width="104" height="42" rx="10" /><text x="52" y="26" text-anchor="middle">{labels[0]}</text></g>
+      <g class="visual-node" transform="translate(152 24)"><rect width="132" height="42" rx="10" /><text x="66" y="26" text-anchor="middle">{labels[1]}</text></g>
+      <g class="visual-node visual-node--accent" transform="translate(258 83)"><rect width="112" height="42" rx="10" /><text x="56" y="26" text-anchor="middle">{labels[2]}</text></g>
+      <g class="visual-cube"><path d="M52 114l44 24v47l-44 25-44-25v-47zM8 138l44 24 44-24M52 162v48M52 114v48" /><text x="52" y="103" text-anchor="middle">{labels[4]}</text></g>
+      <g class="visual-node" transform="translate(136 156)"><rect width="112" height="42" rx="10" /><text x="56" y="26" text-anchor="middle">{labels[3]}</text></g>
+      <text x="298" y="220" text-anchor="middle">{labels[5]}</text><path class="visual-wire" d="M248 177h104v20" />
+    </>}
+    {projectId === 'min-draw-fx' && <>
+      <path class="visual-wire" d="M128 47H152M264 47H288M344 70V102H208V114M208 158V184H288" />
+      {[0, 1, 2].map(index => <g class:list={['visual-node', { 'visual-node--accent': index === 1 }]} transform={`translate(${16 + index * 136} 25)`}><rect width="112" height="44" rx="10" /><text x="56" y="27" text-anchor="middle">{labels[index]}</text></g>)}
+      <g class="visual-shapes"><rect x="28" y="112" width="50" height="48" rx="7" /><circle cx="88" cy="161" r="22" /><path d="M24 192l77-84" /></g>
+      <text x="66" y="222" text-anchor="middle">{labels[3]}</text>
+      <g class="visual-node" transform="translate(152 114)"><rect width="112" height="44" rx="10" /><text x="56" y="27" text-anchor="middle">{labels[4]}</text></g>
+      <g class="visual-node visual-node--accent" transform="translate(288 162)"><rect width="112" height="44" rx="10" /><text x="56" y="27" text-anchor="middle">{labels[5]}</text></g>
+    </>}
+    {projectId === 'waste-classification' && <>
+      <path class="visual-wire" d="M128 52H152M264 52H288M344 74V116H210V132M72 172H154M266 154H288" />
+      {[0, 1, 2].map(index => <g class:list={['visual-node', { 'visual-node--accent': index === 2 }]} transform={`translate(${16 + index * 136} 30)`}><rect width="112" height="44" rx="10" /><text x="56" y="27" text-anchor="middle">{labels[index]}</text></g>)}
+      <g class="visual-neurons">{[0, 1, 2].map(x => [0, 1, 2].map(y => <rect x={30 + x * 20} y={116 + y * 20} width="14" height="14" rx="3" />))}</g>
+      <text x="68" y="210" text-anchor="middle">{labels[3]}</text>
+      <g class="visual-node visual-node--accent" transform="translate(154 132)"><rect width="112" height="44" rx="10" /><text x="56" y="27" text-anchor="middle">{labels[4]}</text></g>
+      <g class="visual-node" transform="translate(288 132)"><rect width="124" height="44" rx="10" /><text x="62" y="27" text-anchor="middle">{labels[5]}</text></g>
+    </>}
+  </svg>
+  <figcaption class="sr-only">{copy.description[locale]}</figcaption>
+</figure>}

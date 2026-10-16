@@ -1,0 +1,28 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { projectSchema } from '@/utils/seo';
+import { localizedPath } from '@/i18n/routes';
+import { ui } from '@/i18n/ui';
+import type { Locale, Project } from '@/types/content';
+import ProjectFacts from '@/components/ProjectFacts.astro';
+import VideoDemoLink from '@/components/VideoDemoLink.astro';
+import { projects } from '@/data/projects';
+interface Props { locale: Locale; project: Project }
+const { locale, project } = Astro.props;
+---
+<BaseLayout locale={locale} title={project.title} description={project.summary[locale]} schema={projectSchema(project, locale)}>
+  <a href={localizedPath(locale, '/projects/')}>{ui[locale].back}</a>
+  <article class="project-detail">
+    <header class="project-detail__hero"><p class="eyebrow">{project.angle[locale]}</p><h1>{project.title}</h1><p class="lead">{project.shortDescription[locale]}</p><VideoDemoLink project={project} locale={locale} /></header>
+    <p class="project-detail__intro">{project.longDescription[locale]}</p>
+    <section aria-labelledby="features-heading"><h2 id="features-heading">{locale === 'fr' ? 'Ce que fait le projet' : 'What the project does'}</h2><ul>{project.mainFeatures[locale].map(feature => <li>{feature}</li>)}</ul></section>
+    <section aria-labelledby="mechanisms-heading"><h2 id="mechanisms-heading">{locale === 'fr' ? 'Les mécanismes techniques' : 'Technical mechanisms'}</h2><ul>{project.technicalHighlights[locale].map(highlight => <li>{highlight}</li>)}</ul><ProjectFacts project={project} locale={locale} /></section>
+    <slot />
+    <section aria-labelledby="limits-heading"><h2 id="limits-heading">{locale === 'fr' ? 'Périmètre et limites' : 'Scope and limitations'}</h2><ul>{project.limitations[locale].map(limitation => <li>{limitation}</li>)}</ul></section>
+    {project.relatedProjects.length > 0 && <section aria-labelledby="related-heading"><h2 id="related-heading">{locale === 'fr' ? 'À explorer aussi' : 'Explore next'}</h2><div class="cluster">{project.relatedProjects.map(id => {
+      const related = projects.find(candidate => candidate.id === id)!;
+      return <a class="text-link" href={localizedPath(locale, `/projects/${related.slug}/`)}>{related.shortTitle ?? related.title}</a>;
+    })}</div></section>}
+    <p><a href={project.githubUrl}>{ui[locale].repository} ↗</a></p>
+  </article>
+</BaseLayout>

@@ -1,0 +1,23 @@
+---
+import { pageSeo, safeJsonLd } from '@/utils/seo';
+import type { Locale } from '@/types/content';
+interface Props { locale: Locale; title: string; description: string; schema?: unknown; noindex?: boolean }
+const { locale, title, description, schema, noindex = false } = Astro.props;
+const seo = pageSeo(locale, Astro.url.pathname, title, description);
+---
+<title>{seo.title}</title>
+<meta name="description" content={seo.description} />
+{(seo.noindex || noindex) && <meta name="robots" content="noindex, nofollow" />}
+{!noindex && seo.canonical && <link rel="canonical" href={seo.canonical} />}
+{!noindex && seo.alternates.map(alternate => alternate.url && <link rel="alternate" hreflang={alternate.lang} href={alternate.url} />)}
+{!noindex && seo.alternates[0]?.url && <link rel="alternate" hreflang="x-default" href={seo.alternates[0].url} />}
+<meta property="og:type" content="website" />
+<meta property="og:title" content={seo.title} />
+<meta property="og:description" content={seo.description} />
+<meta property="og:locale" content={locale === 'fr' ? 'fr_FR' : 'en_GB'} />
+<meta property="og:locale:alternate" content={locale === 'fr' ? 'en_GB' : 'fr_FR'} />
+{seo.canonical && <meta property="og:url" content={seo.canonical} />}
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content={seo.title} />
+<meta name="twitter:description" content={seo.description} />
+{schema && <script type="application/ld+json" set:html={safeJsonLd(schema)} />}

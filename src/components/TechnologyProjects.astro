@@ -1,0 +1,87 @@
+---
+import { homeTechnologies } from '@/data/home';
+import { projectsUsing } from '@/utils/projects';
+import { technologyNames } from '@/data/skills';
+import { projects } from '@/data/projects';
+import { safeJsonLd } from '@/utils/seo';
+import TechTag from './ui/TechTag.astro';
+import { ui } from '@/i18n/ui';
+import { localizedPath } from '@/i18n/routes';
+import type { Locale } from '@/types/content';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const labels = ui[locale];
+const matches = homeTechnologies.map(id => ({ id, label: technologyNames.get(id) ?? id, projects: projectsUsing(id) }));
+const matchingIds = new Set(matches.flatMap(match => match.projects).map(project => project.id));
+const uniqueProjects = projects.filter(project => matchingIds.has(project.id));
+const payload = Object.fromEntries(matches.map(match => [match.id, { label: match.label, projectIds: match.projects.map(project => project.id) }]));
+---
+<div class="technology-projects" data-technology-projects data-uses={labels.usesTechnology} data-other={labels.otherTechnology} data-one={labels.matchingOne} data-many={labels.matchingMany} data-all={labels.allMatches}>
+  <h3>{labels.technologyProjects}</h3>
+  <p class="muted">{labels.technologyHint}</p>
+  <div class="cluster technology-controls" data-technology-controls hidden>
+    <button class="button button--secondary" type="button" data-technology-reset aria-pressed="true">{labels.showAll}</button>
+    {matches.map(match => <button class="tech-tag" type="button" data-technology-select={match.id} aria-pressed="false"><span data-selected-mark hidden aria-hidden="true">✓</span>{match.label}</button>)}
+  </div>
+  <p class="type-small technology-status" role="status" data-technology-status hidden></p>
+  <ul class="technology-results" data-technology-results hidden>
+    {uniqueProjects.map(project => <li data-project-id={project.id}>
+      <a href={localizedPath(locale, `/projects/${project.slug}/`)}>{project.shortTitle ?? project.title}<span aria-hidden="true"> ↗</span></a>
+    </li>)}
+  </ul>
+  <dl class="technology-fallback" data-technology-fallback>
+    {matches.map(match => <div><dt><TechTag locale={locale} technology={match.id} /></dt><dd>{match.projects.map((project, index) => <>{index > 0 && ' · '}<a href={localizedPath(locale, `/projects/${project.slug}/`)}>{project.shortTitle ?? project.title}</a></>)}</dd></div>)}
+  </dl>
+  <script type="application/json" data-technology-map set:html={safeJsonLd(payload)} />
+</div>
+<script>
+  import { formatMessage } from '@/i18n/pages';
+  type MatchMap = Record<string, { label: string; projectIds: string[] }>;
+  const root = document.querySelector<HTMLElement>('[data-technology-projects]');
+  if (root) {
+    const data = root.querySelector('[data-technology-map]');
+    const mapping = JSON.parse(data?.textContent ?? '{}') as MatchMap;
+    const controls = root.querySelector<HTMLElement>('[data-technology-controls]');
+    const results = root.querySelector<HTMLElement>('[data-technology-results]');
+    const status = root.querySelector<HTMLElement>('[data-technology-status]');
+    const fallback = root.querySelector<HTMLElement>('[data-technology-fallback]');
+    const reset = root.querySelector<HTMLButtonElement>('[data-technology-reset]');
+    const buttons = [...root.querySelectorAll<HTMLButtonElement>('[data-technology-select]')];
+    const items = [...root.querySelectorAll<HTMLElement>('[data-project-id]')];
+    let selected: string | undefined;
+    const apply = (technology?: string) => {
+      selected = technology;
+      const match = technology ? mapping[technology] : undefined;
+      for (const button of buttons) {
+        const active = button.dataset.technologySelect === technology;
+        button.setAttribute('aria-pressed', String(active));
+        const mark = button.querySelector<HTMLElement>('[data-selected-mark]');
+        if (mark) mark.hidden = !active;
+      }
+      reset?.setAttribute('aria-pressed', String(!technology));
+      for (const item of items) item.hidden = Boolean(match && !match.projectIds.includes(item.dataset.projectId ?? ''));
+      for (const card of document.querySelectorAll<HTMLElement>('.homepage .project-card[data-technologies]')) {
+        const uses = match && (card.dataset.technologies ?? '').split(' ').includes(technology ?? '');
+        if (match) card.dataset.relation = uses ? 'highlighted' : 'muted';
+        else delete card.dataset.relation;
+        const label = card.querySelector<HTMLElement>('[data-relation-label]');
+        if (label) {
+          label.hidden = !match;
+          label.textContent = match ? formatMessage((uses ? root.dataset.uses : root.dataset.other)!, { technology: match.label }) : '';
+        }
+      }
+      if (status) status.textContent = match
+        ? formatMessage((match.projectIds.length === 1 ? root.dataset.one : root.dataset.many)!, { count: match.projectIds.length, technology: match.label })
+        : root.dataset.all!;
+    };
+    for (const button of buttons) button.addEventListener('click', () => {
+      const id = button.dataset.technologySelect;
+      apply(selected === id ? undefined : id);
+    });
+    reset?.addEventListener('click', () => apply());
+    if (controls && results && status && fallback) {
+      apply();
+      controls.hidden = false; results.hidden = false; status.hidden = false; fallback.hidden = true;
+    }
+  }
+</script>

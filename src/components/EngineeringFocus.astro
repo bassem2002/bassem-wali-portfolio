@@ -1,0 +1,24 @@
+---
+import type { EngineeringFocus } from '@/data/engineering-focus';
+import { focusMechanisms } from '@/data/engineering-focus';
+import type { Locale } from '@/types/content';
+import { projectById } from '@/utils/projects';
+import { localizedPath } from '@/i18n/routes';
+import TechTag from './ui/TechTag.astro';
+import TextLink from './ui/TextLink.astro';
+interface Props { focus: EngineeringFocus; locale: Locale }
+const { focus, locale } = Astro.props;
+const related = focus.projectIds.map(id => {
+  const project = projectById(id);
+  if (!project) throw new Error(`Unknown focus project: ${id}`);
+  return project;
+});
+const technologies = focus.skillIds;
+---
+<article class="engineering-focus" data-focus={focus.id}>
+  <ol class="focus-mechanism" aria-label={locale === 'fr' ? 'Mécanisme représentatif' : 'Representative mechanism'}>{focusMechanisms[focus.id]?.[locale].map(step => <li>{step}</li>)}</ol>
+  <div><h3>{focus.title[locale]}</h3><p class="muted">{focus.description[locale]}</p></div>
+  <div class="focus-evidence"><div class="cluster">{technologies.map(technology => <TechTag locale={locale} technology={technology} />)}</div>
+    <div class="cluster">{related.map(project => <TextLink href={localizedPath(locale, `/projects/${project.slug}`)}>{project.title}</TextLink>)}</div>
+  </div>
+</article>

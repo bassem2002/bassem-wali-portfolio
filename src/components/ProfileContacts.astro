@@ -1,0 +1,12 @@
+---
+import { profile } from '@/data/profile';
+import type { Locale } from '@/types/content';
+import Icon from './ui/Icon.astro';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+---
+<nav class="portrait-contacts" aria-label={locale === 'fr' ? 'Contacter Bassem Wali' : 'Contact Bassem Wali'}>
+  <a href={profile.links.github}><Icon name="github" /><span>GitHub</span></a>
+  <a href={profile.links.linkedin}><Icon name="linkedin" /><span>LinkedIn</span></a>
+  {profile.phone?.publicationApproved && <a class="portrait-contacts__phone" href={`tel:${profile.phone.e164}`}><Icon name="phone" /><span><span class="sr-only">{locale === 'fr' ? 'Téléphone : ' : 'Phone: '}</span>{profile.phone.display}</span></a>}
+</nav>

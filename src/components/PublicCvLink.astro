@@ -1,0 +1,12 @@
+---
+import { profile } from '@/data/profile';
+import { publicCvAvailable } from '@/utils/cv';
+import { ui } from '@/i18n/ui';
+import type { Locale } from '@/types/content';
+import Button from './ui/Button.astro';
+interface Props { locale: Locale }
+const labels = ui[Astro.props.locale];
+---
+{publicCvAvailable()
+  ? <Button href={profile.cv.path} variant="secondary" download>{labels.downloadCv}</Button>
+  : <Button variant="secondary" disabled>{labels.cvUnavailable}</Button>}

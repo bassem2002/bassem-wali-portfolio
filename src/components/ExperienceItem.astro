@@ -1,0 +1,19 @@
+---
+import type { Experience, Locale } from '@/types/content';
+import { localizedPath } from '@/i18n/routes';
+import TechTag from './ui/TechTag.astro';
+import TextLink from './ui/TextLink.astro';
+interface Props { experience: Experience; locale: Locale }
+const { experience, locale } = Astro.props;
+---
+<article class="experience-item">
+  <div class="experience-date"><strong class="experience-year" aria-hidden="true">{experience.period.start.slice(0, 4)}</strong><p>{experience.period.label[locale]}</p><p>{experience.location[locale]}</p></div>
+  <div>
+    <h3>{experience.organization}</h3>
+    <p>{experience.role[locale]}</p>
+    {!experience.projectSlug && <p class="experience-project">{experience.projectName}</p>}
+    <p class="muted">{experience.summary[locale]}</p>
+    <div class="cluster">{experience.technologies.slice(0, 4).map(technology => <TechTag locale={locale} technology={technology} />)}</div>
+    {experience.projectSlug && <TextLink href={localizedPath(locale, `/projects/${experience.projectSlug}`)}>{experience.projectName}</TextLink>}
+  </div>
+</article>

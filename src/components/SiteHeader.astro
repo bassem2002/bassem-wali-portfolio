@@ -1,0 +1,72 @@
+---
+import { profile } from '@/data/profile';
+import { localizedPath } from '@/i18n/routes';
+import { ui } from '@/i18n/ui';
+import ThemeToggle from './ThemeToggle.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import type { Locale } from '@/types/content';
+interface Props { locale: Locale; specimen?: boolean; homepage?: boolean }
+const { locale, specimen = false, homepage = false } = Astro.props;
+const labels = ui[locale];
+---
+<header class="site-header container header-v3 v3-surface" data-site-header>
+  <a href={localizedPath(locale)} class="brand"><span class="brand__mark">BW</span>{' '}<span class="brand__name">{profile.name}</span></a>
+  <div class="site-nav__tools"><LanguageSwitcher locale={locale} /><ThemeToggle locale={locale} /></div>
+  <button class="button button--secondary menu-toggle" type="button" data-menu-toggle aria-controls="site-navigation" aria-expanded="false" hidden>Menu</button>
+  <nav id="site-navigation" class="site-nav" aria-label={labels.mainNavigation}>
+    <a href={homepage ? '#projects' : localizedPath(locale, '/projects/')}>{labels.projects}</a>
+    {(specimen || homepage) && <>
+      <a href="#skills">{labels.skills}</a>
+      <a href="#experience">{locale === 'fr' ? 'Expériences' : 'Experience'}</a>
+      {homepage && <a href="#education">{labels.education}</a>}
+      <a href="#about">{labels.about}</a>
+    </>}
+    <a href={homepage ? '#contact' : `${localizedPath(locale)}#contact`}>{labels.contact}</a>
+  </nav>
+</header>
+<script>
+  const header = document.querySelector<HTMLElement>('[data-site-header]');
+  const button = header?.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const nav = header?.querySelector<HTMLElement>('#site-navigation');
+  if (header && button && nav) {
+    const desktop = window.matchMedia('(min-width: 75rem)');
+    const setOpen = (open: boolean) => {
+      header.dataset.menuOpen = String(open);
+      button.setAttribute('aria-expanded', String(open));
+    };
+    header.dataset.menuEnhanced = 'true';
+    button.hidden = false;
+    setOpen(false);
+    button.addEventListener('click', () => setOpen(button.getAttribute('aria-expanded') !== 'true'));
+    nav.addEventListener('click', event => {
+      if ((event.target as Element).closest('a')) setOpen(false);
+    });
+    header.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && button.getAttribute('aria-expanded') === 'true') {
+        setOpen(false); button.focus();
+      }
+    });
+    document.addEventListener('click', event => {
+      if (!header.contains(event.target as Node)) setOpen(false);
+    });
+    desktop.addEventListener('change', () => {
+      const focusWasInNav = nav.contains(document.activeElement);
+      setOpen(false);
+      if (!desktop.matches && focusWasInNav) button.focus();
+    });
+    const links = [...nav.querySelectorAll<HTMLAnchorElement>('a[href^="#"]')];
+    const sections = links.map(link => document.querySelector(link.hash)).filter((section): section is HTMLElement => section instanceof HTMLElement);
+    if (sections.length && 'IntersectionObserver' in window) {
+      const visible = new Set<Element>();
+      const observer = new IntersectionObserver(entries => {
+        for (const entry of entries) { if (entry.isIntersecting) visible.add(entry.target); else visible.delete(entry.target); }
+        const active = sections.find(section => visible.has(section));
+        for (const link of links) {
+          if (active && link.hash === `#${active.id}`) link.setAttribute('aria-current', 'location');
+          else link.removeAttribute('aria-current');
+        }
+      }, { rootMargin: '-15% 0px -55% 0px', threshold: 0 });
+      sections.forEach(section => observer.observe(section));
+    }
+  }
+</script>

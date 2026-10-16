@@ -1,0 +1,25 @@
+---
+import { alternatePath, localizedPath } from '@/i18n/routes';
+import type { Locale } from '@/types/content';
+import { ui } from '@/i18n/ui';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const other = locale === 'fr' ? 'en' : 'fr';
+const path = Astro.url.pathname;
+const target = path.includes('/data-preview') ? localizedPath(other, '/projects/')
+  : path.includes('/design-system') ? localizedPath(other, '/design-system/')
+  : alternatePath(path, other);
+---
+<div class="language-control"><span class="current-language" lang={locale} aria-current="true" aria-label={ui[locale].currentLanguage}>{locale.toUpperCase()}</span><a class="language-switcher" href={target} lang={other} hreflang={other} data-language-switch={other} aria-label={other === 'en' ? 'EN — Read in English' : 'FR — Lire en français'}>{other.toUpperCase()}</a></div>
+<script>
+  import { switchLocation } from '@/i18n/routes';
+  import type { Locale } from '@/types/content';
+  const switcher = document.querySelector<HTMLAnchorElement>('[data-language-switch]');
+  if (switcher && !/design-system|data-preview/.test(location.pathname)) {
+    const update = () => { switcher.href = switchLocation(location.pathname, switcher.dataset.languageSwitch as Locale, location.search, location.hash); };
+    update();
+    switcher.addEventListener('pointerdown', update);
+    switcher.addEventListener('focus', update);
+    switcher.addEventListener('click', update);
+  }
+</script>

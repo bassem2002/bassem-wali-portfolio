@@ -1,0 +1,53 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import type { Locale, Project } from '@/types/content';
+import { categories } from '@/data/categories';
+import { localizedPath } from '@/i18n/routes';
+import { publishedCaseStudy } from '@/utils/case-studies';
+import { ui } from '@/i18n/ui';
+import Badge from './ui/Badge.astro';
+import TechTag from './ui/TechTag.astro';
+import TextLink from './ui/TextLink.astro';
+import ExternalLink from './ui/ExternalLink.astro';
+import ProjectVisual from './ProjectVisual.astro';
+import VideoDemoLink from './VideoDemoLink.astro';
+import { homeCardTechnologies } from '@/data/home';
+interface Props {
+  project: Project; locale: Locale; headingLevel?: 2 | 3 | 4;
+  relation?: 'highlighted' | 'muted';
+  technologyIds?: readonly string[];
+  screenshot?: { src: ImageMetadata; alt: string; caption: string; republicationApproved: true };
+}
+const { project, locale, headingLevel = 3, relation, screenshot, technologyIds } = Astro.props;
+const cardTechnologies = technologyIds ?? (project.featured ? homeCardTechnologies[project.id] : undefined) ?? project.technologies.slice(0, 4);
+if (cardTechnologies.length > 6 || !cardTechnologies.every(id => project.technologies.includes(id))) throw new Error(`Unsupported card technologies: ${project.id}`);
+const Heading = `h${headingLevel}` as 'h2' | 'h3' | 'h4';
+const detailPath = localizedPath(locale, `/projects/${project.slug}`);
+const caseStudy = await publishedCaseStudy(project.slug, locale);
+---
+<article class:list={['project-card', { 'project-card--featured': project.featured }]} data-project={project.id} data-domain={project.categories[0]} data-relation={relation} data-categories={project.categories.join(' ')} data-technologies={project.technologies.join(' ')}>
+  {screenshot?.republicationApproved && <figure class="project-card__media">
+    <Image src={screenshot.src} alt={screenshot.alt} widths={[480, 800]} sizes="(min-width: 48rem) 50vw, 100vw" format="webp" loading="lazy" />
+    <figcaption>{screenshot.caption}</figcaption>
+  </figure>}
+  {project.featured && !screenshot && <ProjectVisual projectId={project.id} locale={locale} />}
+  <div class="cluster">
+    {project.featured && <Badge accent>{ui[locale].featuredBadge}</Badge>}
+    <span class="technical-label">{project.categories.slice(0, 2).map(category => categories[category][locale]).join(' · ')}</span>
+  </div>
+  <p class="project-card__angle">{project.angle[locale]}</p>
+  <p class="relation-label" data-relation-label hidden={!relation}>{relation === 'highlighted'
+    ? (locale === 'fr' ? '✓ Utilise la technologie sélectionnée' : '✓ Uses the selected technology')
+    : (locale === 'fr' ? 'Autre technologie' : 'Different technology')}</p>
+  <Heading class="project-card__title"><a href={detailPath}>{project.shortTitle ?? project.title}</a></Heading>
+  <p class="project-card__summary">{project.shortDescription[locale]}</p>
+  <VideoDemoLink project={project} locale={locale} />
+  {project.featured && <ul class="project-card__highlights">{project.highlights[locale].map(highlight => <li>{highlight}</li>)}</ul>}
+  <div class="cluster" aria-label={ui[locale].technologies}>{cardTechnologies.map(technology => <TechTag locale={locale} technology={technology} />)}</div>
+  <footer class="project-card__footer">
+    <ExternalLink href={project.githubUrl}>GitHub<span class="sr-only"> — {project.title}</span></ExternalLink>
+    <TextLink href={caseStudy ? `${detailPath}#case-study-heading` : detailPath}>{caseStudy ? ui[locale].caseStudy : ui[locale].details}<span class="sr-only"> — {project.title}</span></TextLink>
+  </footer>
+  {project.cardNote && <p class="project-card__note">{project.cardNote[locale]}</p>}
+</article>
