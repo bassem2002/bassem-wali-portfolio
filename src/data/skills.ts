@@ -4,6 +4,7 @@ import { projects } from './projects.ts';
 // IDs are the common vocabulary used by projects, skills and future filters.
 // Project relationships are derived from projects.ts, never duplicated here.
 const entries: readonly [string, string, SkillCategory][] = [
+  ['wlanguage', 'WLanguage', 'languages'], ['windev-mobile', 'WinDev Mobile', 'frontend-mobile'], ['hfsql', 'HFSQL', 'data'],
   ['java', 'Java', 'languages'], ['csharp', 'C#', 'languages'],
   ['typescript', 'TypeScript', 'languages'], ['javascript', 'JavaScript', 'languages'],
   ['php', 'PHP', 'languages'], ['python', 'Python', 'languages'], ['dart', 'Dart', 'languages'],
@@ -63,7 +64,8 @@ const entries: readonly [string, string, SkillCategory][] = [
   ['multithreading', 'Multithreading', 'networking'], ['mock-testing', 'Tests avec mocks', 'testing-tools'],
 ];
 
-const cvOnlyIds = new Set(['dotnet', 'sql', 'jquery', 'html', 'css']);
+const a2softIds = new Set(['windev-mobile', 'wlanguage', 'hfsql']);
+const cvOnlyIds = new Set(['dotnet', 'sql', 'jquery', 'html', 'css', ...a2softIds]);
 
 export const skills: readonly Skill[] = entries.map(([id, name, category]) => {
   const demonstratedBy = projects.filter(project => project.relatedSkills.includes(id));
@@ -73,7 +75,7 @@ export const skills: readonly Skill[] = entries.map(([id, name, category]) => {
     projectIds: demonstratedBy.map(project => project.id),
     evidence: demonstratedBy.length > 0
       ? demonstratedBy.map(project => ({ source: 'repository' as const, reference: project.githubUrl }))
-      : [{ source: 'cv' as const, reference: 'CV local — compétences et expérience Clinisys' }],
+      : [{ source: 'cv' as const, reference: a2softIds.has(id) ? 'Extrait CV fourni par le propriétaire — stage A2soft, juillet–août 2022' : 'CV local — compétences et expérience Clinisys' }],
   };
 });
 export const technologyNames = new Map(skills.map(skill => [skill.id, skill.name]));

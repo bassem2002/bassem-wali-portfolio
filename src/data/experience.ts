@@ -31,4 +31,14 @@ export const experiences: readonly Experience[] = [
     summary: { fr: 'Application web de gestion de devis liés à un traitement de chimiothérapie.', en: 'Web application for managing quotations related to chemotherapy treatment.' },
     technologies: ['csharp', 'dotnet', 'sql', 'javascript', 'jquery', 'html', 'css'], contributions: [], evidence: [cv],
   },
+  {
+    id: 'a2soft-2022', organization: 'A2soft', kind: 'internship',
+    role: { fr: 'Stagiaire Développement Mobile', en: 'Mobile Development Intern' },
+    period: { start: '2022-07', end: '2022-08', label: { fr: 'Juillet–août 2022', en: 'July–August 2022' } },
+    location: { fr: 'Sfax, Tunisie', en: 'Sfax, Tunisia' },
+    projectName: '',
+    summary: { fr: 'Application mobile de gestion de rendez-vous : développement de l’authentification, de la recherche et des opérations CRUD, conception de l’interface et intégration d’une base de données HFSQL.', en: 'Mobile appointment management application: developed authentication, search and CRUD operations, designed the interface and integrated an HFSQL database.' },
+    technologies: ['windev-mobile', 'wlanguage', 'hfsql'],
+    contributions: [], evidence: [{ source: 'cv', reference: 'Extrait CV fourni par le propriétaire — stage A2soft, juillet–août 2022' }],
+  },
 ];
